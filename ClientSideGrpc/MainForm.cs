@@ -1,3 +1,4 @@
+using AnimalHealth.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,9 @@ namespace ClientSideGrpc
     {
         private ClientFacade clientFacade;
 
+        /// <summary>
+        /// Конструктор главной формы
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -27,6 +31,9 @@ namespace ClientSideGrpc
             clientFacade = new ClientFacade();
         }
 
+        /// <summary>
+        /// Авторизация в приложении, работает на пользовательском интерфейсе
+        /// </summary>
         public void Authorize(object sender, EventArgs e)
         {
             if (textLogin.Text != "" && textPassword.Text != "")
@@ -52,76 +59,121 @@ namespace ClientSideGrpc
             }
         }
 
+
+        /// <summary>
+        /// Событие нажатия на кнопку добавления организации
+        /// </summary>
         public void ClickButtonAddOrganisation(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано.. реализовать..");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку удаления организации
+        /// </summary>
         public void ClickButtonRemoveOrganisation(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку изменения организации
+        /// </summary>
         public void ClickButtonEditOrganisation(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
-        private bool IsCorrectOrganisation(string organisation)
+        /// <summary>
+        /// Проверка на пустые поля при добавлении или изменении организации.
+        /// принимает на вход новую модель организации.
+        /// </summary>
+        private bool IsCorrectOrganisation(OrganizationModel model)
         {
             return true;
         }
 
-        public void ClickButtonGetOrganisations(object sender, EventArgs e /*DateTime start, DateTime end*/)
+        /// <summary>
+        /// Событие нажатия на кнопку получения списка организаций
+        /// </summary>
+        public void ClickButtonGetOrganisations(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку добавления контракта
+        /// </summary>
         public void ClickButtonAddContract(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано. реализовать.");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку удаления контракта
+        /// </summary>
         public void ClickButtonRemoveContract(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку изменения контракта
+        /// </summary>
         public void ClickButtonEditContract(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
-        public bool IsCorrectContract(string contract)
+        /// <summary>
+        /// Проверка на пустые поля при добавлении или изменении организации.
+        /// принимает на вход новую модель организации.
+        /// </summary>
+        public bool IsCorrectContract(ContractModel model)
         {
             return true;
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку получения списка контрактов
+        /// </summary>
         public void ClickButtonGetContracts(object sender, EventArgs e /*DateTime start, DateTime end*/)
         {
             MessageBox.Show("Не реализовано");
         }
 
-
+        /// <summary>
+        /// Событие нажатия на кнопку добавления вакцинации
+        /// </summary>
         public void ClickButtonAddVaccination(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано... реализовать...");
             //clientFacade.AddVaccination(new AnimalHealth.Application.Models.VaccinationAddModel());
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку удаления вакцинации
+        /// </summary>
         public void ClickButtonRemoveVaccination(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
             //clientFacade.DeleteVaccination(new AnimalHealth.Application.Models.VaccinationLookout());
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку изменения вакцинации
+        /// </summary>
         public void ClickButtonEditVaccination(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
             //clientFacade.EditVaccination(new AnimalHealth.Application.Models.VaccinationModel());
         }
 
-        public bool isCorrectVaccination(string Vaccination)
+        /// <summary>
+        /// Проверка на пустые поля при добавлении или изменении организации.
+        /// принимает на вход новую модель организации.
+        /// </summary>
+        public bool isCorrectVaccination(VaccinationModel model)
         {
             return true;
             /*
@@ -130,65 +182,96 @@ namespace ClientSideGrpc
              */
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку получения списка вакцинаций
+        /// </summary>
         public void ClickButtonGetVaccinations(object sender, EventArgs e)
         {
             var vaccinationList = clientFacade.GetVaccinations(new Google.Protobuf.WellKnownTypes.Empty());
             dataGrid.DataSource = vaccinationList.Vaccinations;
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку добавления осмотра
+        /// </summary>
         public void ClickButtonAddInspection(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано.... реализовать....");
             //clientFacade.AddInspection(new AnimalHealth.Application.Models.InspectionAddModel());
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку удаления осмотра
+        /// </summary>
         public void ClickButtonRemoveInspection(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
             //clientFacade.DeleteInspection(new AnimalHealth.Application.Models.InspectionLookout());
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку изменения осмотра
+        /// </summary>
         public void ClickButtonEditInspection(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
             //clientFacade.EditInspection(new AnimalHealth.Application.Models.InspectionAddModel());
         }
 
+        /// <summary>
+        /// Проверка на пустые поля при добавлении или изменении организации.
+        /// принимает на вход новую модель организации.
+        /// </summary>
         public bool isCorrectInspection(string Inspection)
         {
             return true;
-            /*
-             *  if
-             *  else
-             */
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку получения списка осмотров
+        /// </summary>
         public void ClickButtonGetInspections(object sender, EventArgs e)
         {
             var inspectionList = clientFacade.GetInspections(new Google.Protobuf.WellKnownTypes.Empty());
             dataGrid.DataSource = inspectionList.Inspections;
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку детального рассмотрения организации
+        /// </summary>
         public void ClickButtonShowOrganisation(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку детального рассмотрения контракта
+        /// </summary>
         public void ClickButtonShowContract(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку детального рассмотрения вакцинации
+        /// </summary>
         public void ClickButtonShowVaccination(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на кнопку детального рассмотрения осмотра
+        /// </summary>
         public void ClickButtonShowInspection(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
         }
 
+        /// <summary>
+        /// Событие нажатия на пункт меню "Контракты"
+        /// Открывает возможность взаимодействия с контрактами
+        /// </summary>
         private void ClickContractsShow(object sender, EventArgs e)
         {
             HideAll();
@@ -200,6 +283,10 @@ namespace ClientSideGrpc
             dataGrid.Visible = true;
         }
 
+        /// <summary>
+        /// Событие нажатия на пункт меню "Организации"
+        /// Открывает возможность взаимодействия с организациями
+        /// </summary>
         private void ClickOrganisationShow(object sender, EventArgs e)
         {
             HideAll();
@@ -211,6 +298,10 @@ namespace ClientSideGrpc
             dataGrid.Visible = true;
         }
 
+        /// <summary>
+        /// Событие нажатия на пункт меню "Вакцинации"
+        /// Открывает возможность взаимодействия с вакцинациями
+        /// </summary>
         private void ClickVaccinationShow(object sender, EventArgs e)
         {
             HideAll();
@@ -222,6 +313,10 @@ namespace ClientSideGrpc
             dataGrid.Visible = true;
         }
 
+        /// <summary>
+        /// Событие нажатия на пункт меню "Осмотры"
+        /// Открывает возможность взаимодействия с осмотрами
+        /// </summary>
         private void ClickInspectionShow(object sender, EventArgs e)
         {
             HideAll();
@@ -233,6 +328,9 @@ namespace ClientSideGrpc
             dataGrid.Visible = true;
         }
 
+        /// <summary>
+        /// Метод скрывающий все элементы на экране, кроме меню
+        /// </summary>
         private void HideAll()
         {
             dataGrid.DataSource = null;
@@ -255,6 +353,9 @@ namespace ClientSideGrpc
             InspectionsGet.Visible = false;
         }
 
+        /// <summary>
+        /// Метод открывающий форму для взаимодействия с отчётами
+        /// </summary>
         private void отчётОToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var reports = new ReportForm();
