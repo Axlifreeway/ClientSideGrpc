@@ -1,4 +1,5 @@
 using AnimalHealth.Application.Models;
+using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -147,8 +148,21 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonAddVaccination(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано... реализовать...");
-            //clientFacade.AddVaccination(new AnimalHealth.Application.Models.VaccinationAddModel());
+            HideAll();
+            currentProccedure.Visible = true;
+            fifthAtributeLabel.Visible = true;
+            secondAtributeLabel.Visible = true;
+            firstAtributeLabel.Visible = true;
+            thirdAtributeLabel.Visible = true;
+            fourthAtributeLabel.Visible = true;
+            sixthAtributeLabel.Visible = true;
+            firstDate.Visible = true;
+            secondDate.Visible = true;
+            userSelection.Visible = true;
+            animalSelection.Visible = true;
+            contractSelection.Visible = true;
+            vaccineSelection.Visible = true;
+            buttonOk.Visible = true;           
         }
 
         /// <summary>
@@ -156,8 +170,9 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonRemoveVaccination(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
-            //clientFacade.DeleteVaccination(new AnimalHealth.Application.Models.VaccinationLookout());
+            var deletedindex = dataGrid.CurrentRow.Index;
+            var deletemodel = ((VaccinationModelList)dataGrid.DataSource).Vaccinations[deletedindex];
+            clientFacade.DeleteVaccination(deletemodel);
         }
 
         /// <summary>
@@ -167,19 +182,34 @@ namespace ClientSideGrpc
         {
             MessageBox.Show("Не реализовано");
             //clientFacade.EditVaccination(new AnimalHealth.Application.Models.VaccinationModel());
+            currentProccedure.Visible = true;
+            fifthAtributeLabel.Visible = true;
+            secondAtributeLabel.Visible = true;
+            firstAtributeLabel.Visible = true;
+            thirdAtributeLabel.Visible = true;
+            fourthAtributeLabel.Visible = true;
+            sixthAtributeLabel.Visible = true;
+            firstDate.Visible = true;
+            secondDate.Visible = true;
+            userSelection.Visible = true;
+            animalSelection.Visible = true;
+            contractSelection.Visible = true;
+            vaccineSelection.Visible = true;
+            buttonOk.Visible = true;
         }
 
         /// <summary>
         /// Проверка на пустые поля при добавлении или изменении организации.
         /// принимает на вход новую модель организации.
         /// </summary>
-        public bool isCorrectVaccination(VaccinationModel model)
+        public bool isCorrectVaccination(VaccinationAddModel addmodel = null, VaccinationModel model = null)
         {
-            return true;
-            /*
-             *  if
-             *  else
-             */
+            return firstDate.Value != DateTime.Today
+                && secondDate.Value != DateTime.Today
+                && userSelection.Text != ""
+                && animalSelection.Text != ""
+                && contractSelection.Text != ""
+                && vaccineSelection.Text != "";
         }
 
         /// <summary>
@@ -351,6 +381,20 @@ namespace ClientSideGrpc
             InspectionRemove.Visible = false;
             InspectionEdit.Visible = false;
             InspectionsGet.Visible = false;
+            currentProccedure.Visible = false;
+            fifthAtributeLabel.Visible = false;
+            secondAtributeLabel.Visible = false;
+            firstAtributeLabel.Visible = false;
+            thirdAtributeLabel.Visible = false;
+            fourthAtributeLabel.Visible = false;
+            sixthAtributeLabel.Visible = false;
+            firstDate.Visible = false;
+            secondDate.Visible = false;
+            userSelection.Visible = false;
+            animalSelection.Visible = false;
+            contractSelection.Visible = false;
+            vaccineSelection.Visible = false;
+            buttonOk.Visible = false;
         }
 
         /// <summary>
@@ -362,9 +406,23 @@ namespace ClientSideGrpc
             reports.ShowDialog();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-
+            var model = new VaccinationAddModel();
+            model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
+            model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
+            model.User = (UserModel)userSelection.SelectedItem;
+            model.Animal = (AnimalModel)animalSelection.SelectedItem;
+            model.Contract = (ContractModel)contractSelection.SelectedItem;
+            model.Vaccine = (VaccineModel)vaccineSelection.SelectedItem;
+            if (isCorrectVaccination(model))
+            {
+                clientFacade.AddVaccination(model);
+            }
+            else
+            {
+                MessageBox.Show("Введите недостающие данные!");
+            }
         }
     }
 }
