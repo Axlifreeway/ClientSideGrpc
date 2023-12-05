@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClietnSide
+namespace ClientSideGrpc
 {
     public partial class MainForm : Form
     {
@@ -24,7 +24,7 @@ namespace ClietnSide
             âàêöèíàöèèToolStripMenuItem.Visible = false;
             îñìîòğûToolStripMenuItem.Visible = false;
             îò÷¸òÎToolStripMenuItem.Visible = false;
-            ClientFacade client = new ClientFacade();
+            clientFacade = new ClientFacade();
         }
 
         public void Authorize(object sender, EventArgs e)
@@ -132,9 +132,8 @@ namespace ClietnSide
 
         public void ClickButtonGetVaccinations(object sender, EventArgs e)
         {
-            //MessageBox.Show("Íå ğåàëèçîâàíî");
-            var vaccinations = clientFacade.GetVaccinations(new Google.Protobuf.WellKnownTypes.Empty());
-            dataGrid.DataSource = vaccinations;
+            var vaccinationList = clientFacade.GetVaccinations(new Google.Protobuf.WellKnownTypes.Empty());
+            dataGrid.DataSource = vaccinationList.Vaccinations;
         }
 
         public void ClickButtonAddInspection(object sender, EventArgs e)
@@ -166,8 +165,8 @@ namespace ClietnSide
 
         public void ClickButtonGetInspections(object sender, EventArgs e)
         {
-            MessageBox.Show("Íå ğåàëèçîâàíî");
-            //var inspections = clientFacade.GetInspections(new Google.Protobuf.WellKnownTypes.Empty());
+            var inspectionList = clientFacade.GetInspections(new Google.Protobuf.WellKnownTypes.Empty());
+            dataGrid.DataSource = inspectionList.Inspections;
         }
 
         public void ClickButtonShowOrganisation(object sender, EventArgs e)
@@ -236,6 +235,7 @@ namespace ClietnSide
 
         private void HideAll()
         {
+            dataGrid.DataSource = null;
             ContractAdd.Visible = false;
             ContractRemove.Visible = false;
             ContractEdit.Visible = false;

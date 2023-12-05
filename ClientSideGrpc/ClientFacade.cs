@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClietnSide
+namespace ClientSideGrpc
 {
     public class ClientFacade
     {
@@ -15,24 +15,24 @@ namespace ClietnSide
 
         public ClientFacade()
         {
-            var channel = GrpcChannel.ForAddress("https://localhost:8080");
+            var channel = GrpcChannel.ForAddress("http://localhost:8080");
             InspectionClient = new InspectionProto.InspectionProtoClient(channel);
             VaccinationClient = new VaccinationProto.VaccinationProtoClient(channel);
         }
 
         public void AddContract(ContractModel model)
         {
-
+            //не реализовано
         }
 
         public void DeleteContract(ContractModel model)
         {
-
+            //не реализовано
         }
 
         public void EditContract(ContractModel model)
         {
-
+            //не реализовано
         }
 
         public List<string> GetContracts(Google.Protobuf.WellKnownTypes.Empty request)
@@ -42,17 +42,17 @@ namespace ClietnSide
 
         public void AddOrganisation(OrganizationModel model)
         {
-
+            //не реализовано
         }
 
         public void DeleteOrganisation(OrganizationModel model)
         {
-
+            //не реализовано
         }
 
         public void EditOrganisation(OrganizationModel model)
         {
-
+            //не реализовано
         }
 
         public List<string> GetOrganisations()
