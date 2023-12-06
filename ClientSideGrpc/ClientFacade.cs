@@ -12,8 +12,9 @@ namespace ClientSideGrpc
     {
         private InspectionProto.InspectionProtoClient InspectionClient { get; set; }
         private VaccinationProto.VaccinationProtoClient VaccinationClient { get; set; }
-        //private ContractProto.ContractProtoClient ContractClient { get; set; }
-        //private OrganisationProto.OrganisationProtoClient OrganisaitonClient { get; set; }
+        private ContractProto.ContractProtoClient ContractClient { get; set; }
+
+        private OrganizationProto.OrganizationProtoClient OrganisationClient { get; set; }
 
 
         /// <summary>
@@ -24,24 +25,24 @@ namespace ClientSideGrpc
             var channel = GrpcChannel.ForAddress("http://localhost:8080");
             InspectionClient = new InspectionProto.InspectionProtoClient(channel);
             VaccinationClient = new VaccinationProto.VaccinationProtoClient(channel);
-            //ContractClient = new ContractProto.ContractProtoClient(channel);
-            //OrganisationClient = new OrganisationProto.OrganisationProtoClient(channel);
+            ContractClient = new ContractProto.ContractProtoClient(channel);      
+            OrganisationClient = new OrganizationProto.OrganizationProtoClient(channel);
         }
 
         /// <summary>
         /// Метод фасада для добавления контракта принимает на вход модель контракта
         /// </summary>
-        public void AddContract(ContractModel model)
+        public void AddContract(ContractAddModel model)
         {
-            //не реализовано
+            ContractClient.AddContract(model);
         }
 
         /// <summary>
         /// Метод фасада для удаления контракта принимает на вход модель контракта
         /// </summary>
-        public void DeleteContract(ContractModel model)
+        public void DeleteContract(ContractLookup model)
         {
-            //не реализовано
+            ContractClient.DeleteContract(model);
         }
 
         /// <summary>
@@ -49,31 +50,31 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditContract(ContractModel model)
         {
-            //не реализовано
+            ContractClient.UpdateContract(model);
         }
 
         /// <summary>
         /// Метод фасада для ... принимает на вход запрос протобаф
         /// </summary>
-        public List<string> GetContracts(Google.Protobuf.WellKnownTypes.Empty request)
+        public ContractModelList GetContracts(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return null;
+            return ContractClient.GetContracts(request);
         }
 
         /// <summary>
         /// Метод фасада для добавления организации принимает на вход модель организации
         /// </summary>
-        public void AddOrganisation(OrganizationModel model)
+        public void AddOrganisation(OrganizationAddModel model)
         {
-            //не реализовано
+            OrganisationClient.AddOrganization(model);
         }
 
         /// <summary>
         /// Метод фасада для удаления организации принимает на вход модель организации
         /// </summary>
-        public void DeleteOrganisation(OrganizationModel model)
+        public void DeleteOrganisation(OrganizationLookup model)
         {
-            //не реализовано
+            OrganisationClient.DeleteOrganization(model);
         }
 
         /// <summary>
@@ -81,15 +82,15 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditOrganisation(OrganizationModel model)
         {
-            //не реализовано
+            OrganisationClient.UpdateOrganization(model);
         }
 
         /// <summary>
         /// Метод фасада для получения листа организаций принимает на вход запрос протобаф
         /// </summary>
-        public List<string> GetOrganisations()
+        public OrganizationModelList GetOrganisations(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return null;
+            return OrganisationClient.GetOrganizations(request);
         }
 
         /// <summary>

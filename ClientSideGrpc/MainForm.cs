@@ -300,12 +300,24 @@ namespace ClientSideGrpc
             HideAll();
             currentProccedure.Text = "Добавление осмотра";
             currentProccedure.Visible = true;
-            fifthAtributeLabel.Visible = true;
-            secondAtributeLabel.Visible = true;
             firstAtributeLabel.Visible = true;
-            thirdAtributeLabel.Visible = true;
+            firstAtributeLabel.Text = "Поведение:";
+            secondAtributeLabel.Visible = true;
+            secondAtributeLabel.Text = "Состояние:";
+            thirdAtributeLabel.Visible = true; 
+            fifthAtributeLabel.Visible = true;           
+            firstAtributeLabel.Visible = true;
             fourthAtributeLabel.Visible = true;
             sixthAtributeLabel.Visible = true;
+            sixthAtributeLabel.Text = "Болезнь";
+            label1.Visible = true;
+            label2.Visible = true;
+            label3.Visible = true;
+            label4.Visible = true;
+            label5.Visible = true;
+            label6.Visible = true;
+            label7.Visible = true;
+            label8.Visible = true;
             firstDate.Visible = true;
             secondDate.Visible = true;
             userSelection.Visible = true;
@@ -496,6 +508,14 @@ namespace ClientSideGrpc
             vaccineSelection.Visible = false;
             buttonOk.Visible = false;
             buttonCancel.Visible = false;
+            label1.Visible = false;
+            label2.Visible = false;
+            label3.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            label6.Visible = false;
+            label7.Visible = false;
+            label8.Visible = false;
         }
 
         /// <summary>

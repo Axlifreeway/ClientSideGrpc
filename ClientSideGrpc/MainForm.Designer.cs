@@ -553,6 +553,7 @@
             AnimalCondition.Name = "AnimalCondition";
             AnimalCondition.Size = new Size(200, 23);
             AnimalCondition.TabIndex = 45;
+            AnimalCondition.Visible = false;
             // 
             // Temperature
             // 
@@ -560,6 +561,7 @@
             Temperature.Name = "Temperature";
             Temperature.Size = new Size(200, 23);
             Temperature.TabIndex = 46;
+            Temperature.Visible = false;
             // 
             // NeedOperations
             // 
@@ -571,6 +573,7 @@
             NeedOperations.TabStop = true;
             NeedOperations.Text = "Нужно лечение";
             NeedOperations.UseVisualStyleBackColor = true;
+            NeedOperations.Visible = false;
             // 
             // textBox1
             // 
@@ -578,6 +581,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(200, 23);
             textBox1.TabIndex = 48;
+            textBox1.Visible = false;
             // 
             // textBox2
             // 
@@ -585,6 +589,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(200, 23);
             textBox2.TabIndex = 49;
+            textBox2.Visible = false;
             // 
             // Manipulations
             // 
@@ -592,6 +597,7 @@
             Manipulations.Name = "Manipulations";
             Manipulations.Size = new Size(200, 23);
             Manipulations.TabIndex = 50;
+            Manipulations.Visible = false;
             // 
             // Treatment
             // 
@@ -599,6 +605,7 @@
             Treatment.Name = "Treatment";
             Treatment.Size = new Size(200, 23);
             Treatment.TabIndex = 51;
+            Treatment.Visible = false;
             // 
             // InspectionDate
             // 
@@ -606,6 +613,7 @@
             InspectionDate.Name = "InspectionDate";
             InspectionDate.Size = new Size(200, 23);
             InspectionDate.TabIndex = 52;
+            InspectionDate.Visible = false;
             // 
             // Injuries
             // 
@@ -613,6 +621,7 @@
             Injuries.Name = "Injuries";
             Injuries.Size = new Size(200, 23);
             Injuries.TabIndex = 53;
+            Injuries.Visible = false;
             // 
             // label1
             // 
@@ -622,6 +631,7 @@
             label1.Size = new Size(132, 15);
             label1.TabIndex = 54;
             label1.Text = "Состояние животного:";
+            label1.Visible = false;
             // 
             // label2
             // 
@@ -631,6 +641,7 @@
             label2.Size = new Size(103, 15);
             label2.TabIndex = 55;
             label2.Text = "Состояние кожы:";
+            label2.Visible = false;
             // 
             // label3
             // 
@@ -640,6 +651,7 @@
             label3.Size = new Size(99, 15);
             label3.TabIndex = 56;
             label3.Text = "Состояние меха:";
+            label3.Visible = false;
             // 
             // label4
             // 
@@ -649,6 +661,7 @@
             label4.Size = new Size(97, 15);
             label4.TabIndex = 57;
             label4.Text = "Нужно лечение:";
+            label4.Visible = false;
             // 
             // label5
             // 
@@ -658,6 +671,7 @@
             label5.Size = new Size(88, 15);
             label5.TabIndex = 58;
             label5.Text = "Манипуляции:";
+            label5.Visible = false;
             // 
             // label6
             // 
@@ -667,6 +681,7 @@
             label6.Size = new Size(57, 15);
             label6.TabIndex = 59;
             label6.Text = "Лечение:";
+            label6.Visible = false;
             // 
             // label7
             // 
@@ -676,6 +691,7 @@
             label7.Size = new Size(85, 15);
             label7.TabIndex = 60;
             label7.Text = "Дата осмотра:";
+            label7.Visible = false;
             // 
             // label8
             // 
@@ -685,6 +701,7 @@
             label8.Size = new Size(86, 15);
             label8.TabIndex = 61;
             label8.Text = "Повреждение:";
+            label8.Visible = false;
             // 
             // MainForm
             // 
