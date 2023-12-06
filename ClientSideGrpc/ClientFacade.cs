@@ -13,8 +13,8 @@ namespace ClientSideGrpc
         private InspectionProto.InspectionProtoClient InspectionClient { get; set; }
         private VaccinationProto.VaccinationProtoClient VaccinationClient { get; set; }
         private ContractProto.ContractProtoClient ContractClient { get; set; }
-
         private OrganizationProto.OrganizationProtoClient OrganisationClient { get; set; }
+        private OtherResourceProto.OtherResourceProtoClient OtherResourceClient { get; set; }
 
 
         /// <summary>
@@ -27,6 +27,7 @@ namespace ClientSideGrpc
             VaccinationClient = new VaccinationProto.VaccinationProtoClient(channel);
             ContractClient = new ContractProto.ContractProtoClient(channel);      
             OrganisationClient = new OrganizationProto.OrganizationProtoClient(channel);
+            OtherResourceClient = new OtherResourceProto.OtherResourceProtoClient(channel);
         }
 
         /// <summary>
@@ -155,6 +156,46 @@ namespace ClientSideGrpc
         public InspectionModelList GetInspections(Google.Protobuf.WellKnownTypes.Empty request)
         {
             return InspectionClient.GetInspections(request);
+        }
+
+        /// <summary>
+        /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
+        /// </summary>
+        public AnimalModelList GetAnimals(Google.Protobuf.WellKnownTypes.Empty request)
+        {
+            return OtherResourceClient.GetAnimals(request);
+        }
+
+        /// <summary>
+        /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
+        /// </summary>
+        public LocalityModelList GetLocalities(Google.Protobuf.WellKnownTypes.Empty request)
+        {
+            return OtherResourceClient.GetLocalities(request);
+        }
+
+        /// <summary>
+        /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
+        /// </summary>
+        public UserModelList GetUsers(Google.Protobuf.WellKnownTypes.Empty request)
+        {
+            return OtherResourceClient.GetUsers(request);
+        }
+
+        /// <summary>
+        /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
+        /// </summary>
+        public VaccineModelList GetVaccines(Google.Protobuf.WellKnownTypes.Empty request)
+        {
+            return OtherResourceClient.GetVaccines(request);
+        }
+
+        /// <summary>
+        /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
+        /// </summary>
+        public DiseaseModelList GetDiseases(Google.Protobuf.WellKnownTypes.Empty request)
+        {
+            return OtherResourceClient.GetDiseases(request);
         }
     }
 }

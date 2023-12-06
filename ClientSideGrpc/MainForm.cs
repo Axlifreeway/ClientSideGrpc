@@ -6,9 +6,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace ClientSideGrpc
 {
@@ -74,23 +76,30 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonRemoveOrganisation(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
+            var selected = dataGrid.CurrentRow;
+            var index = selected.Index;
+            if (dataGrid.CurrentRow != null)
+            {
+                var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+                if (message == DialogResult.Yes)
+                {
+                    var deletedindex = (string)selected.Cells[0].Value;
+                    var deletemodel = new OrganizationLookup();
+                    deletemodel.Tin = deletedindex;
+                    clientFacade.DeleteOrganisation(deletemodel);
 
-            //if (dataGrid.CurrentRow != null)
-            //{
-            //    var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
-            //    if (message == DialogResult.Yes)
-            //    {
-            //        var deletedindex = (int)dataGrid.CurrentRow.Cells[0].Value;
-            //        var deletemodel = new VaccinationLookup();
-            //        deletemodel.Id = deletedindex;
-            //        clientFacade.DeleteVaccination(deletemodel);
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Не выбран удаляемый элемент!");
-            //}
+                    var newdata = (Google.Protobuf.Collections.RepeatedField<OrganizationModel>)dataGrid.DataSource;
+                    dataGrid.DataSource = null;
+                    newdata.RemoveAt(index);
+                    dataGrid.DataSource = newdata;
+
+                    dataGrid.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбран удаляемый элемент!");
+            }
         }
 
         /// <summary>
@@ -115,7 +124,8 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonGetOrganisations(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
+            var organisationsList = clientFacade.GetOrganisations(new Google.Protobuf.WellKnownTypes.Empty());
+            dataGrid.DataSource = organisationsList.Organizations;
         }
 
         /// <summary>
@@ -131,23 +141,30 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonRemoveContract(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
+            var selected = dataGrid.CurrentRow;
+            var index = selected.Index;
+            if (dataGrid.CurrentRow != null)
+            {
+                var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+                if (message == DialogResult.Yes)
+                {
+                    var deletedindex = (int)selected.Cells[0].Value;
+                    var deletemodel = new VaccinationLookup();
+                    deletemodel.Id = deletedindex;
+                    clientFacade.DeleteVaccination(deletemodel);
 
-            //if (dataGrid.CurrentRow != null)
-            //{
-            //    var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
-            //    if (message == DialogResult.Yes)
-            //    {
-            //        var deletedindex = (int)dataGrid.CurrentRow.Cells[0].Value;
-            //        var deletemodel = new VaccinationLookup();
-            //        deletemodel.Id = deletedindex;
-            //        clientFacade.DeleteVaccination(deletemodel);
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Не выбран удаляемый элемент!");
-            //}
+                    var newdata = (Google.Protobuf.Collections.RepeatedField<ContractModel>)dataGrid.DataSource;
+                    dataGrid.DataSource = null;
+                    newdata.RemoveAt(index);
+                    dataGrid.DataSource = newdata;
+
+                    dataGrid.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбран удаляемый элемент!");
+            }
         }
 
         /// <summary>
@@ -172,7 +189,8 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonGetContracts(object sender, EventArgs e /*DateTime start, DateTime end*/)
         {
-            MessageBox.Show("Не реализовано");
+            var contractsList = clientFacade.GetContracts(new Google.Protobuf.WellKnownTypes.Empty());
+            dataGrid.DataSource = contractsList.Contracts;
         }
 
         /// <summary>
@@ -192,9 +210,17 @@ namespace ClientSideGrpc
             firstDate.Visible = true;
             secondDate.Visible = true;
             userSelection.Visible = true;
+            var users = clientFacade.GetUsers(new Empty()).Users;
+            userSelection.Items.AddRange((from u in users select u.Name).ToArray());
             animalSelection.Visible = true;
+            var animals = clientFacade.GetAnimals(new Empty()).Animals;
+            animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
             contractSelection.Visible = true;
+            var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+            contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
             vaccineSelection.Visible = true;
+            var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
+            animalSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
             buttonOk.Visible = true;
         }
 
