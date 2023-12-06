@@ -70,7 +70,7 @@ namespace ClientSideGrpc
         }
 
         /// <summary>
-        /// Событие нажатия на кнопку удаления организации
+        /// Событие нажатия на кнопку удаления организации :D
         /// </summary>
         public void ClickButtonRemoveOrganisation(object sender, EventArgs e)
         {
