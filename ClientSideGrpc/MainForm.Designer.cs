@@ -77,8 +77,8 @@
             AnimalCondition = new TextBox();
             Temperature = new TextBox();
             NeedOperations = new RadioButton();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            Skin = new TextBox();
+            Fur = new TextBox();
             Manipulations = new TextBox();
             Treatment = new TextBox();
             InspectionDate = new DateTimePicker();
@@ -241,6 +241,7 @@
             OrganisationsGet.Text = "Заполнить";
             OrganisationsGet.UseVisualStyleBackColor = true;
             OrganisationsGet.Visible = false;
+            OrganisationsGet.Click += ClickButtonGetOrganisations;
             // 
             // VaccinationAdd
             // 
@@ -575,21 +576,21 @@
             NeedOperations.UseVisualStyleBackColor = true;
             NeedOperations.Visible = false;
             // 
-            // textBox1
+            // Skin
             // 
-            textBox1.Location = new Point(588, 108);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(200, 23);
-            textBox1.TabIndex = 48;
-            textBox1.Visible = false;
+            Skin.Location = new Point(588, 108);
+            Skin.Name = "Skin";
+            Skin.Size = new Size(200, 23);
+            Skin.TabIndex = 48;
+            Skin.Visible = false;
             // 
-            // textBox2
+            // Fur
             // 
-            textBox2.Location = new Point(588, 137);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(200, 23);
-            textBox2.TabIndex = 49;
-            textBox2.Visible = false;
+            Fur.Location = new Point(588, 137);
+            Fur.Name = "Fur";
+            Fur.Size = new Size(200, 23);
+            Fur.TabIndex = 49;
+            Fur.Visible = false;
             // 
             // Manipulations
             // 
@@ -720,8 +721,8 @@
             Controls.Add(InspectionDate);
             Controls.Add(Treatment);
             Controls.Add(Manipulations);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(Fur);
+            Controls.Add(Skin);
             Controls.Add(NeedOperations);
             Controls.Add(Temperature);
             Controls.Add(AnimalCondition);
@@ -827,8 +828,8 @@
         private TextBox AnimalCondition;
         private TextBox Temperature;
         private RadioButton NeedOperations;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox Skin;
+        private TextBox Fur;
         private TextBox Manipulations;
         private TextBox Treatment;
         private DateTimePicker InspectionDate;

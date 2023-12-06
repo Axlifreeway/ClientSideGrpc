@@ -1,5 +1,6 @@
 using AnimalHealth.Application.Models;
 using Google.Protobuf.WellKnownTypes;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -124,7 +125,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonGetOrganisations(object sender, EventArgs e)
         {
-            var organisationsList = clientFacade.GetOrganisations(new Google.Protobuf.WellKnownTypes.Empty());
+            var organisationsList = clientFacade.GetOrganisations(new Empty());
             dataGrid.DataSource = organisationsList.Organizations;
         }
 
@@ -220,7 +221,7 @@ namespace ClientSideGrpc
             contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
             vaccineSelection.Visible = true;
             var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
-            animalSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
+            vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
             buttonOk.Visible = true;
         }
 
@@ -296,8 +297,8 @@ namespace ClientSideGrpc
         }
 
         /// <summary>
-        /// ѕроверка на пустые пол€ при добавлении или изменении организации.
-        /// принимает на вход новую модель организации.
+        /// ѕроверка на пустые пол€ при добавлении или изменении вакцинации.
+        /// принимает на вход новую модель вакцинации.
         /// </summary>
         public bool isCorrectVaccination(VaccinationModel model)
         {
@@ -350,7 +351,16 @@ namespace ClientSideGrpc
             animalSelection.Visible = true;
             contractSelection.Visible = true;
             vaccineSelection.Visible = true;
+            Temperature.Visible = true;
+            Skin.Visible = true;
+            Fur.Visible = true;
+            NeedOperations.Visible = true;
+            Manipulations.Visible = true;
+            Treatment.Visible = true;
+            InspectionDate.Visible = true;
+            Injuries.Visible = true;
             buttonOk.Visible = true;
+            buttonCancel.Visible = true;
 
             //clientFacade.AddInspection(new AnimalHealth.Application.Models.InspectionAddModel());
         }
@@ -542,6 +552,14 @@ namespace ClientSideGrpc
             label6.Visible = false;
             label7.Visible = false;
             label8.Visible = false;
+            Temperature.Visible = false;
+            Skin.Visible = false;
+            Fur.Visible = false;
+            NeedOperations.Visible = false;
+            Manipulations.Visible = false;
+            Treatment.Visible = false;
+            InspectionDate.Visible = false;
+            Injuries.Visible = false;
         }
 
         /// <summary>
@@ -555,16 +573,24 @@ namespace ClientSideGrpc
 
         private void button1_Click(object sender, EventArgs e)
         {
+            var users = clientFacade.GetUsers(new Empty()).Users;
+            var user = (from u in users where u.Name == Convert.ToString(userSelection.SelectedItem) select u).First();
+            var animals = clientFacade.GetAnimals(new Empty()).Animals;
+            var animal = (from u in animals where u.Name == Convert.ToString(animalSelection.SelectedItem) select u).First();
+            var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+            var contract = (from u in contracts where u.Number == Convert.ToInt32(contractSelection.SelectedItem) select u).First();
+            var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
+            var vaccine = (from u in vaccines where u.Name == Convert.ToString(vaccineSelection.SelectedItem) select u).First();
             if (labelIndex.Text != "Id")
             {
                 var model = new VaccinationModel();
                 model.Id = Convert.ToInt32(labelIndex.Text);
                 model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
                 model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
-                model.User = (UserModel)userSelection.SelectedItem;
-                model.Animal = (AnimalModel)animalSelection.SelectedItem;
-                model.Contract = (ContractModel)contractSelection.SelectedItem;
-                model.Vaccine = (VaccineModel)vaccineSelection.SelectedItem;
+                model.User = user;
+                model.Animal = animal;
+                model.Contract = contract;
+                model.Vaccine = vaccine;
                 if (isCorrectVaccination(model))
                 {
                     clientFacade.EditVaccination(model);
@@ -579,10 +605,10 @@ namespace ClientSideGrpc
                 var model = new VaccinationAddModel();
                 model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
                 model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
-                model.User = (UserModel)userSelection.SelectedItem;
-                model.Animal = (AnimalModel)animalSelection.SelectedItem;
-                model.Contract = (ContractModel)contractSelection.SelectedItem;
-                model.Vaccine = (VaccineModel)vaccineSelection.SelectedItem;
+                model.User = user;
+                model.Animal = animal;
+                model.Contract = contract;
+                model.Vaccine = vaccine;
                 if (isCorrectVaccination(new VaccinationModel()))
                 {
                     clientFacade.AddVaccination(model);
