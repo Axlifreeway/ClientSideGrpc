@@ -22,7 +22,7 @@ namespace ClientSideGrpc
 
         public void AddContract(ContractModel model)
         {
-            //не реализовано
+            //не реализованочы
         }
 
         public void DeleteContract(ContractModel model)
