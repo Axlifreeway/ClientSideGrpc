@@ -75,6 +75,22 @@ namespace ClientSideGrpc
         public void ClickButtonRemoveOrganisation(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
+
+            //if (dataGrid.CurrentRow != null)
+            //{
+            //    var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+            //    if (message == DialogResult.Yes)
+            //    {
+            //        var deletedindex = (int)dataGrid.CurrentRow.Cells[0].Value;
+            //        var deletemodel = new VaccinationLookup();
+            //        deletemodel.Id = deletedindex;
+            //        clientFacade.DeleteVaccination(deletemodel);
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Не выбран удаляемый элемент!");
+            //}
         }
 
         /// <summary>
@@ -116,6 +132,22 @@ namespace ClientSideGrpc
         public void ClickButtonRemoveContract(object sender, EventArgs e)
         {
             MessageBox.Show("Не реализовано");
+
+            //if (dataGrid.CurrentRow != null)
+            //{
+            //    var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+            //    if (message == DialogResult.Yes)
+            //    {
+            //        var deletedindex = (int)dataGrid.CurrentRow.Cells[0].Value;
+            //        var deletemodel = new VaccinationLookup();
+            //        deletemodel.Id = deletedindex;
+            //        clientFacade.DeleteVaccination(deletemodel);
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Не выбран удаляемый элемент!");
+            //}
         }
 
         /// <summary>
@@ -170,9 +202,31 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonRemoveVaccination(object sender, EventArgs e)
         {
-            var deletedindex = dataGrid.CurrentRow.Index;
-            var deletemodel = ((VaccinationModelList)dataGrid.DataSource).Vaccinations[deletedindex];
-            clientFacade.DeleteVaccination(deletemodel);
+            var selected = dataGrid.CurrentRow;
+            var index = selected.Index;
+            if (selected != null && index != -1)
+            {
+                var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+                if(message == DialogResult.Yes)
+                {
+                    var deletedindex = (int)selected.Cells[0].Value;
+                    var deletemodel = new VaccinationLookup();
+                    deletemodel.Id = deletedindex;
+                    clientFacade.DeleteVaccination(deletemodel);
+
+                    var newdata = (Google.Protobuf.Collections.RepeatedField<VaccinationModel>)dataGrid.DataSource;
+                    dataGrid.DataSource = null;
+                    newdata.RemoveAt(index);
+                    dataGrid.DataSource = newdata;
+                    
+                    dataGrid.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбран удаляемый элемент!");
+            }
+            
         }
 
         /// <summary>
@@ -235,8 +289,21 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonRemoveInspection(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
-            //clientFacade.DeleteInspection(new AnimalHealth.Application.Models.InspectionLookout());
+            if (dataGrid.CurrentRow != null)
+            {
+                var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+                if (message == DialogResult.Yes)
+                {
+                    var deletedindex = (int)dataGrid.CurrentRow.Cells[0].Value;
+                    var deletemodel = new InspectionLookup();
+                    deletemodel.Id = deletedindex;
+                    clientFacade.DeleteInspection(deletemodel);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбран удаляемый элемент!");
+            }
         }
 
         /// <summary>

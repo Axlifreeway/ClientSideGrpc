@@ -123,11 +123,14 @@
             // 
             dataGrid.AllowUserToAddRows = false;
             dataGrid.AllowUserToDeleteRows = false;
+            dataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGrid.Dock = DockStyle.Top;
             dataGrid.Location = new Point(0, 24);
+            dataGrid.MultiSelect = false;
             dataGrid.Name = "dataGrid";
             dataGrid.ReadOnly = true;
+            dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGrid.Size = new Size(800, 376);
             dataGrid.TabIndex = 1;
             dataGrid.Visible = false;
