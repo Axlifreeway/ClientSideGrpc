@@ -181,61 +181,7 @@ namespace ClientSideGrpc
         public void ClickButtonAddVaccination(object sender, EventArgs e)
         {
             HideAll();
-            currentProccedure.Visible = true;
-            fifthAtributeLabel.Visible = true;
-            secondAtributeLabel.Visible = true;
-            firstAtributeLabel.Visible = true;
-            thirdAtributeLabel.Visible = true;
-            fourthAtributeLabel.Visible = true;
-            sixthAtributeLabel.Visible = true;
-            firstDate.Visible = true;
-            secondDate.Visible = true;
-            userSelection.Visible = true;
-            animalSelection.Visible = true;
-            contractSelection.Visible = true;
-            vaccineSelection.Visible = true;
-            buttonOk.Visible = true;           
-        }
-
-        /// <summary>
-        /// Событие нажатия на кнопку удаления вакцинации
-        /// </summary>
-        public void ClickButtonRemoveVaccination(object sender, EventArgs e)
-        {
-            var selected = dataGrid.CurrentRow;
-            var index = selected.Index;
-            if (selected != null && index != -1)
-            {
-                var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
-                if(message == DialogResult.Yes)
-                {
-                    var deletedindex = (int)selected.Cells[0].Value;
-                    var deletemodel = new VaccinationLookup();
-                    deletemodel.Id = deletedindex;
-                    clientFacade.DeleteVaccination(deletemodel);
-
-                    var newdata = (Google.Protobuf.Collections.RepeatedField<VaccinationModel>)dataGrid.DataSource;
-                    dataGrid.DataSource = null;
-                    newdata.RemoveAt(index);
-                    dataGrid.DataSource = newdata;
-                    
-                    dataGrid.Refresh();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Не выбран удаляемый элемент!");
-            }
-            
-        }
-
-        /// <summary>
-        /// Событие нажатия на кнопку изменения вакцинации
-        /// </summary>
-        public void ClickButtonEditVaccination(object sender, EventArgs e)
-        {
-            MessageBox.Show("Не реализовано");
-            //clientFacade.EditVaccination(new AnimalHealth.Application.Models.VaccinationModel());
+            currentProccedure.Text = "Добавление вакцинации";
             currentProccedure.Visible = true;
             fifthAtributeLabel.Visible = true;
             secondAtributeLabel.Visible = true;
@@ -253,10 +199,81 @@ namespace ClientSideGrpc
         }
 
         /// <summary>
+        /// Событие нажатия на кнопку удаления вакцинации
+        /// </summary>
+        public void ClickButtonRemoveVaccination(object sender, EventArgs e)
+        {
+            var selected = dataGrid.CurrentRow;
+            var index = selected.Index;
+            if (selected != null && index != -1)
+            {
+                var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
+                if (message == DialogResult.Yes)
+                {
+                    var deletedindex = (int)selected.Cells[0].Value;
+                    var deletemodel = new VaccinationLookup();
+                    deletemodel.Id = deletedindex;
+                    clientFacade.DeleteVaccination(deletemodel);
+
+                    var newdata = (Google.Protobuf.Collections.RepeatedField<VaccinationModel>)dataGrid.DataSource;
+                    dataGrid.DataSource = null;
+                    newdata.RemoveAt(index);
+                    dataGrid.DataSource = newdata;
+
+                    dataGrid.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбран удаляемый элемент!");
+            }
+
+        }
+
+        /// <summary>
+        /// Событие нажатия на кнопку изменения вакцинации
+        /// </summary>
+        public void ClickButtonEditVaccination(object sender, EventArgs e)
+        {
+            if (dataGrid.CurrentRow != null)
+            {
+                var selected = dataGrid.CurrentRow;
+                labelIndex.Text = Convert.ToString(selected.Cells[0].Value);
+                firstDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[1].Value).Seconds).ToLocalTime();
+                secondDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[2].Value).Seconds).ToLocalTime();
+                userSelection.Text = (string)selected.Cells[3].Value;
+                animalSelection.Text = (string)selected.Cells[4].Value;
+                contractSelection.Text = (string)selected.Cells[5].Value;
+                vaccineSelection.Text = (string)selected.Cells[6].Value;
+                HideAll();
+                currentProccedure.Text = "Изменение вакцинации";
+                currentProccedure.Visible = true;
+                fifthAtributeLabel.Visible = true;
+                secondAtributeLabel.Visible = true;
+                firstAtributeLabel.Visible = true;
+                thirdAtributeLabel.Visible = true;
+                fourthAtributeLabel.Visible = true;
+                sixthAtributeLabel.Visible = true;
+                firstDate.Visible = true;
+                secondDate.Visible = true;
+                userSelection.Visible = true;
+                animalSelection.Visible = true;
+                contractSelection.Visible = true;
+                vaccineSelection.Visible = true;
+                buttonOk.Visible = true;
+                buttonCancel.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Сначала выберите строчку для изменения!");
+            }
+        }
+
+        /// <summary>
         /// Проверка на пустые поля при добавлении или изменении организации.
         /// принимает на вход новую модель организации.
         /// </summary>
-        public bool isCorrectVaccination(VaccinationAddModel addmodel = null, VaccinationModel model = null)
+        public bool isCorrectVaccination(VaccinationModel model)
         {
             return firstDate.Value != DateTime.Today
                 && secondDate.Value != DateTime.Today
@@ -280,7 +297,23 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonAddInspection(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано.... реализовать....");
+            HideAll();
+            currentProccedure.Text = "Добавление осмотра";
+            currentProccedure.Visible = true;
+            fifthAtributeLabel.Visible = true;
+            secondAtributeLabel.Visible = true;
+            firstAtributeLabel.Visible = true;
+            thirdAtributeLabel.Visible = true;
+            fourthAtributeLabel.Visible = true;
+            sixthAtributeLabel.Visible = true;
+            firstDate.Visible = true;
+            secondDate.Visible = true;
+            userSelection.Visible = true;
+            animalSelection.Visible = true;
+            contractSelection.Visible = true;
+            vaccineSelection.Visible = true;
+            buttonOk.Visible = true;
+
             //clientFacade.AddInspection(new AnimalHealth.Application.Models.InspectionAddModel());
         }
 
@@ -462,6 +495,7 @@ namespace ClientSideGrpc
             contractSelection.Visible = false;
             vaccineSelection.Visible = false;
             buttonOk.Visible = false;
+            buttonCancel.Visible = false;
         }
 
         /// <summary>
@@ -475,20 +509,59 @@ namespace ClientSideGrpc
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var model = new VaccinationAddModel();
-            model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
-            model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
-            model.User = (UserModel)userSelection.SelectedItem;
-            model.Animal = (AnimalModel)animalSelection.SelectedItem;
-            model.Contract = (ContractModel)contractSelection.SelectedItem;
-            model.Vaccine = (VaccineModel)vaccineSelection.SelectedItem;
-            if (isCorrectVaccination(model))
+            if (labelIndex.Text != "Id")
             {
-                clientFacade.AddVaccination(model);
+                var model = new VaccinationModel();
+                model.Id = Convert.ToInt32(labelIndex.Text);
+                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
+                model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
+                model.User = (UserModel)userSelection.SelectedItem;
+                model.Animal = (AnimalModel)animalSelection.SelectedItem;
+                model.Contract = (ContractModel)contractSelection.SelectedItem;
+                model.Vaccine = (VaccineModel)vaccineSelection.SelectedItem;
+                if (isCorrectVaccination(model))
+                {
+                    clientFacade.EditVaccination(model);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
             }
             else
             {
-                MessageBox.Show("Введите недостающие данные!");
+                var model = new VaccinationAddModel();
+                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
+                model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
+                model.User = (UserModel)userSelection.SelectedItem;
+                model.Animal = (AnimalModel)animalSelection.SelectedItem;
+                model.Contract = (ContractModel)contractSelection.SelectedItem;
+                model.Vaccine = (VaccineModel)vaccineSelection.SelectedItem;
+                if (isCorrectVaccination(new VaccinationModel()))
+                {
+                    clientFacade.AddVaccination(model);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
+            }
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            var registry = currentProccedure.Text;
+            HideAll();
+            switch(registry.Split(' ')[1])
+            {
+                case "вакцинации":
+                    ClickVaccinationShow(null, null);
+                    break;
+                case "осмотра":
+                    ClickInspectionShow(null, null);
+                    break;
+                default:
+                    break;
             }
         }
     }
