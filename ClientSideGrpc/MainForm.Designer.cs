@@ -57,6 +57,40 @@
             textPassword = new TextBox();
             buttonAuth = new Button();
             labelAuth = new Label();
+            firstAtributeLabel = new Label();
+            secondAtributeLabel = new Label();
+            firstDate = new DateTimePicker();
+            secondDate = new DateTimePicker();
+            userSelection = new ComboBox();
+            animalSelection = new ComboBox();
+            contractSelection = new ComboBox();
+            vaccineSelection = new ComboBox();
+            thirdAtributeLabel = new Label();
+            fourthAtributeLabel = new Label();
+            fifthAtributeLabel = new Label();
+            sixthAtributeLabel = new Label();
+            currentProccedure = new Label();
+            buttonOk = new Button();
+            buttonCancel = new Button();
+            labelIndex = new Label();
+            featureBehavior = new TextBox();
+            AnimalCondition = new TextBox();
+            Temperature = new TextBox();
+            NeedOperations = new RadioButton();
+            textBox1 = new TextBox();
+            textBox2 = new TextBox();
+            Manipulations = new TextBox();
+            Treatment = new TextBox();
+            InspectionDate = new DateTimePicker();
+            Injuries = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGrid).BeginInit();
             SuspendLayout();
@@ -109,11 +143,14 @@
             // 
             dataGrid.AllowUserToAddRows = false;
             dataGrid.AllowUserToDeleteRows = false;
+            dataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGrid.Dock = DockStyle.Top;
             dataGrid.Location = new Point(0, 24);
+            dataGrid.MultiSelect = false;
             dataGrid.Name = "dataGrid";
             dataGrid.ReadOnly = true;
+            dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGrid.Size = new Size(800, 376);
             dataGrid.TabIndex = 1;
             dataGrid.Visible = false;
@@ -345,11 +382,366 @@
             labelAuth.TabIndex = 23;
             labelAuth.Text = "Авторизация";
             // 
+            // firstAtributeLabel
+            // 
+            firstAtributeLabel.AutoSize = true;
+            firstAtributeLabel.Location = new Point(89, 79);
+            firstAtributeLabel.Name = "firstAtributeLabel";
+            firstAtributeLabel.Size = new Size(104, 15);
+            firstAtributeLabel.TabIndex = 26;
+            firstAtributeLabel.Text = "Дата вакцинации:";
+            firstAtributeLabel.Visible = false;
+            // 
+            // secondAtributeLabel
+            // 
+            secondAtributeLabel.AutoSize = true;
+            secondAtributeLabel.Location = new Point(76, 108);
+            secondAtributeLabel.Name = "secondAtributeLabel";
+            secondAtributeLabel.Size = new Size(117, 15);
+            secondAtributeLabel.TabIndex = 27;
+            secondAtributeLabel.Text = "Дата ревакцинации:";
+            secondAtributeLabel.Visible = false;
+            // 
+            // firstDate
+            // 
+            firstDate.Location = new Point(199, 79);
+            firstDate.Name = "firstDate";
+            firstDate.Size = new Size(200, 23);
+            firstDate.TabIndex = 30;
+            firstDate.Visible = false;
+            // 
+            // secondDate
+            // 
+            secondDate.Location = new Point(199, 108);
+            secondDate.Name = "secondDate";
+            secondDate.Size = new Size(200, 23);
+            secondDate.TabIndex = 31;
+            secondDate.Visible = false;
+            // 
+            // userSelection
+            // 
+            userSelection.FormattingEnabled = true;
+            userSelection.Location = new Point(199, 137);
+            userSelection.Name = "userSelection";
+            userSelection.Size = new Size(200, 23);
+            userSelection.TabIndex = 32;
+            userSelection.Visible = false;
+            // 
+            // animalSelection
+            // 
+            animalSelection.FormattingEnabled = true;
+            animalSelection.Location = new Point(199, 166);
+            animalSelection.Name = "animalSelection";
+            animalSelection.Size = new Size(200, 23);
+            animalSelection.TabIndex = 33;
+            animalSelection.Visible = false;
+            // 
+            // contractSelection
+            // 
+            contractSelection.FormattingEnabled = true;
+            contractSelection.Location = new Point(199, 195);
+            contractSelection.Name = "contractSelection";
+            contractSelection.Size = new Size(200, 23);
+            contractSelection.TabIndex = 34;
+            contractSelection.Visible = false;
+            // 
+            // vaccineSelection
+            // 
+            vaccineSelection.FormattingEnabled = true;
+            vaccineSelection.Location = new Point(199, 224);
+            vaccineSelection.Name = "vaccineSelection";
+            vaccineSelection.Size = new Size(200, 23);
+            vaccineSelection.TabIndex = 35;
+            vaccineSelection.Visible = false;
+            // 
+            // thirdAtributeLabel
+            // 
+            thirdAtributeLabel.AutoSize = true;
+            thirdAtributeLabel.Location = new Point(139, 136);
+            thirdAtributeLabel.Name = "thirdAtributeLabel";
+            thirdAtributeLabel.Size = new Size(54, 15);
+            thirdAtributeLabel.TabIndex = 36;
+            thirdAtributeLabel.Text = "Ветврач:";
+            thirdAtributeLabel.Visible = false;
+            // 
+            // fourthAtributeLabel
+            // 
+            fourthAtributeLabel.AutoSize = true;
+            fourthAtributeLabel.Location = new Point(127, 166);
+            fourthAtributeLabel.Name = "fourthAtributeLabel";
+            fourthAtributeLabel.Size = new Size(66, 15);
+            fourthAtributeLabel.TabIndex = 37;
+            fourthAtributeLabel.Text = "Животное:";
+            fourthAtributeLabel.Visible = false;
+            // 
+            // fifthAtributeLabel
+            // 
+            fifthAtributeLabel.AutoSize = true;
+            fifthAtributeLabel.Location = new Point(133, 195);
+            fifthAtributeLabel.Name = "fifthAtributeLabel";
+            fifthAtributeLabel.Size = new Size(60, 15);
+            fifthAtributeLabel.TabIndex = 38;
+            fifthAtributeLabel.Text = "Контракт:";
+            fifthAtributeLabel.Visible = false;
+            // 
+            // sixthAtributeLabel
+            // 
+            sixthAtributeLabel.AutoSize = true;
+            sixthAtributeLabel.Location = new Point(139, 224);
+            sixthAtributeLabel.Name = "sixthAtributeLabel";
+            sixthAtributeLabel.Size = new Size(56, 15);
+            sixthAtributeLabel.TabIndex = 39;
+            sixthAtributeLabel.Text = "Вакцина:";
+            sixthAtributeLabel.Visible = false;
+            // 
+            // currentProccedure
+            // 
+            currentProccedure.AutoSize = true;
+            currentProccedure.Font = new Font("Segoe UI", 16F);
+            currentProccedure.Location = new Point(251, 37);
+            currentProccedure.Name = "currentProccedure";
+            currentProccedure.Size = new Size(268, 30);
+            currentProccedure.TabIndex = 40;
+            currentProccedure.Text = "Добавление вакцинации";
+            currentProccedure.Visible = false;
+            // 
+            // buttonOk
+            // 
+            buttonOk.Font = new Font("Segoe UI", 12F);
+            buttonOk.Location = new Point(199, 253);
+            buttonOk.Name = "buttonOk";
+            buttonOk.Size = new Size(200, 32);
+            buttonOk.TabIndex = 41;
+            buttonOk.Text = "Подтвердить";
+            buttonOk.UseVisualStyleBackColor = true;
+            buttonOk.Visible = false;
+            buttonOk.Click += button1_Click;
+            // 
+            // buttonCancel
+            // 
+            buttonCancel.Font = new Font("Segoe UI", 12F);
+            buttonCancel.Location = new Point(81, 253);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new Size(112, 32);
+            buttonCancel.TabIndex = 42;
+            buttonCancel.Text = "Отмена";
+            buttonCancel.UseVisualStyleBackColor = true;
+            buttonCancel.Visible = false;
+            buttonCancel.Click += buttonCancel_Click;
+            // 
+            // labelIndex
+            // 
+            labelIndex.AutoSize = true;
+            labelIndex.Location = new Point(199, 79);
+            labelIndex.Name = "labelIndex";
+            labelIndex.Size = new Size(17, 15);
+            labelIndex.TabIndex = 43;
+            labelIndex.Text = "Id";
+            labelIndex.Visible = false;
+            // 
+            // featureBehavior
+            // 
+            featureBehavior.Location = new Point(199, 79);
+            featureBehavior.Name = "featureBehavior";
+            featureBehavior.Size = new Size(200, 23);
+            featureBehavior.TabIndex = 44;
+            featureBehavior.Visible = false;
+            // 
+            // AnimalCondition
+            // 
+            AnimalCondition.Location = new Point(199, 108);
+            AnimalCondition.Name = "AnimalCondition";
+            AnimalCondition.Size = new Size(200, 23);
+            AnimalCondition.TabIndex = 45;
+            AnimalCondition.Visible = false;
+            // 
+            // Temperature
+            // 
+            Temperature.Location = new Point(588, 79);
+            Temperature.Name = "Temperature";
+            Temperature.Size = new Size(200, 23);
+            Temperature.TabIndex = 46;
+            Temperature.Visible = false;
+            // 
+            // NeedOperations
+            // 
+            NeedOperations.AutoSize = true;
+            NeedOperations.Location = new Point(636, 166);
+            NeedOperations.Name = "NeedOperations";
+            NeedOperations.Size = new Size(112, 19);
+            NeedOperations.TabIndex = 47;
+            NeedOperations.TabStop = true;
+            NeedOperations.Text = "Нужно лечение";
+            NeedOperations.UseVisualStyleBackColor = true;
+            NeedOperations.Visible = false;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(588, 108);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(200, 23);
+            textBox1.TabIndex = 48;
+            textBox1.Visible = false;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(588, 137);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(200, 23);
+            textBox2.TabIndex = 49;
+            textBox2.Visible = false;
+            // 
+            // Manipulations
+            // 
+            Manipulations.Location = new Point(588, 191);
+            Manipulations.Name = "Manipulations";
+            Manipulations.Size = new Size(200, 23);
+            Manipulations.TabIndex = 50;
+            Manipulations.Visible = false;
+            // 
+            // Treatment
+            // 
+            Treatment.Location = new Point(588, 221);
+            Treatment.Name = "Treatment";
+            Treatment.Size = new Size(200, 23);
+            Treatment.TabIndex = 51;
+            Treatment.Visible = false;
+            // 
+            // InspectionDate
+            // 
+            InspectionDate.Location = new Point(588, 250);
+            InspectionDate.Name = "InspectionDate";
+            InspectionDate.Size = new Size(200, 23);
+            InspectionDate.TabIndex = 52;
+            InspectionDate.Visible = false;
+            // 
+            // Injuries
+            // 
+            Injuries.Location = new Point(588, 279);
+            Injuries.Name = "Injuries";
+            Injuries.Size = new Size(200, 23);
+            Injuries.TabIndex = 53;
+            Injuries.Visible = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(453, 79);
+            label1.Name = "label1";
+            label1.Size = new Size(132, 15);
+            label1.TabIndex = 54;
+            label1.Text = "Состояние животного:";
+            label1.Visible = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(482, 108);
+            label2.Name = "label2";
+            label2.Size = new Size(103, 15);
+            label2.TabIndex = 55;
+            label2.Text = "Состояние кожы:";
+            label2.Visible = false;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(486, 137);
+            label3.Name = "label3";
+            label3.Size = new Size(99, 15);
+            label3.TabIndex = 56;
+            label3.Text = "Состояние меха:";
+            label3.Visible = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(488, 163);
+            label4.Name = "label4";
+            label4.Size = new Size(97, 15);
+            label4.TabIndex = 57;
+            label4.Text = "Нужно лечение:";
+            label4.Visible = false;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(497, 191);
+            label5.Name = "label5";
+            label5.Size = new Size(88, 15);
+            label5.TabIndex = 58;
+            label5.Text = "Манипуляции:";
+            label5.Visible = false;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(528, 221);
+            label6.Name = "label6";
+            label6.Size = new Size(57, 15);
+            label6.TabIndex = 59;
+            label6.Text = "Лечение:";
+            label6.Visible = false;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(500, 250);
+            label7.Name = "label7";
+            label7.Size = new Size(85, 15);
+            label7.TabIndex = 60;
+            label7.Text = "Дата осмотра:";
+            label7.Visible = false;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(499, 279);
+            label8.Name = "label8";
+            label8.Size = new Size(86, 15);
+            label8.TabIndex = 61;
+            label8.Text = "Повреждение:";
+            label8.Visible = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label8);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(Injuries);
+            Controls.Add(InspectionDate);
+            Controls.Add(Treatment);
+            Controls.Add(Manipulations);
+            Controls.Add(textBox2);
+            Controls.Add(textBox1);
+            Controls.Add(NeedOperations);
+            Controls.Add(Temperature);
+            Controls.Add(AnimalCondition);
+            Controls.Add(featureBehavior);
+            Controls.Add(labelIndex);
+            Controls.Add(buttonCancel);
+            Controls.Add(buttonOk);
+            Controls.Add(currentProccedure);
+            Controls.Add(sixthAtributeLabel);
+            Controls.Add(fifthAtributeLabel);
+            Controls.Add(fourthAtributeLabel);
+            Controls.Add(thirdAtributeLabel);
+            Controls.Add(vaccineSelection);
+            Controls.Add(contractSelection);
+            Controls.Add(animalSelection);
+            Controls.Add(userSelection);
+            Controls.Add(secondDate);
+            Controls.Add(firstDate);
+            Controls.Add(secondAtributeLabel);
+            Controls.Add(firstAtributeLabel);
             Controls.Add(labelAuth);
             Controls.Add(buttonAuth);
             Controls.Add(textPassword);
@@ -415,5 +807,39 @@
         private System.Windows.Forms.TextBox textPassword;
         private System.Windows.Forms.Button buttonAuth;
         private System.Windows.Forms.Label labelAuth;
+        private Label firstAtributeLabel;
+        private Label secondAtributeLabel;
+        private DateTimePicker firstDate;
+        private DateTimePicker secondDate;
+        private ComboBox userSelection;
+        private ComboBox animalSelection;
+        private ComboBox contractSelection;
+        private ComboBox vaccineSelection;
+        private Label thirdAtributeLabel;
+        private Label fourthAtributeLabel;
+        private Label fifthAtributeLabel;
+        private Label sixthAtributeLabel;
+        private Label currentProccedure;
+        private Button buttonOk;
+        private Button buttonCancel;
+        private Label labelIndex;
+        private TextBox featureBehavior;
+        private TextBox AnimalCondition;
+        private TextBox Temperature;
+        private RadioButton NeedOperations;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private TextBox Manipulations;
+        private TextBox Treatment;
+        private DateTimePicker InspectionDate;
+        private TextBox Injuries;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private Label label7;
+        private Label label8;
     }
 }
