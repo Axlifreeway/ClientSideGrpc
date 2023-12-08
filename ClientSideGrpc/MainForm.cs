@@ -1,17 +1,9 @@
 using AnimalHealth.Application.Models;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
+using System.Diagnostics.Contracts;
+using System.Reflection.PortableExecutable;
 
 namespace ClientSideGrpc
 {
@@ -69,7 +61,32 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonAddOrganisation(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано.. реализовать..");
+            HideAll();
+            currentProccedure.Text = "Добавление организации";
+            currentProccedure.Visible = true;
+            firstAtributeLabel.Text = "ИНН:";
+            firstAtributeLabel.Visible = true;
+            secondAtributeLabel.Text = "КПП:";
+            secondAtributeLabel.Visible = true;
+            thirdAtributeLabel.Text = "Название:";
+            thirdAtributeLabel.Visible = true;
+            fourthAtributeLabel.Text = "Тип организации:";
+            fourthAtributeLabel.Visible = true;
+            fifthAtributeLabel.Text = "Особенность:";
+            fifthAtributeLabel.Visible = true;
+            sixthAtributeLabel.Text = "Населённый пункт:";
+            sixthAtributeLabel.Visible = true;
+
+            var localities = clientFacade.GetLocalities(new Empty()).Localities;
+            OrgLoclity.Items.AddRange((from l in localities select l.Name).ToArray());
+
+            OrganTin.Visible = true;
+            OrganTin.ReadOnly =false;
+            OrganTrc.Visible = true;
+            OrgName.Visible = true;
+            OrgType.Visible = true;
+            OrgFeature.Visible = true;
+            OrgLoclity.Visible = true;
         }
 
         /// <summary>
@@ -108,7 +125,42 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonEditOrganisation(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
+            if (dataGrid.CurrentRow != null)
+            {
+                var selected = dataGrid.CurrentRow;
+                HideAll();
+                currentProccedure.Text = "Добавление организации";
+                currentProccedure.Visible = true;
+                firstAtributeLabel.Text = "ИНН:";
+                firstAtributeLabel.Visible = true;
+                secondAtributeLabel.Text = "КПП:";
+                secondAtributeLabel.Visible = true;
+                thirdAtributeLabel.Text = "Название:";
+                thirdAtributeLabel.Visible = true;
+                fourthAtributeLabel.Text = "Тип организации:";
+                fourthAtributeLabel.Visible = true;
+                fifthAtributeLabel.Text = "Особенность:";
+                fifthAtributeLabel.Visible = true;
+                sixthAtributeLabel.Text = "Населённый пункт:";
+                sixthAtributeLabel.Visible = true;
+
+                var localities = clientFacade.GetLocalities(new Empty()).Localities;
+                OrgLoclity.Items.AddRange((from l in localities select l.Name).ToArray());
+
+                OrganTin.Visible = true;
+                OrganTin.ReadOnly = true;
+                OrganTin.Text = selected.Cells[0].Value.ToString();
+                OrganTrc.Visible = true;
+                OrganTrc.Text = selected.Cells[1].Value.ToString();
+                OrgName.Visible = true;
+                OrgName.Text = selected.Cells[2].Value.ToString();
+                OrgType.Visible = true;
+                OrgType.Text = selected.Cells[3].Value.ToString();
+                OrgFeature.Visible = true;
+                OrgFeature.Text = selected.Cells[4].Value.ToString();
+                OrgLoclity.Visible = true;
+                OrgLoclity.Text = ((UserModel)(selected.Cells[5].Value)).Name;
+            }
         }
 
         /// <summary>
@@ -117,7 +169,9 @@ namespace ClientSideGrpc
         /// </summary>
         private bool IsCorrectOrganisation(OrganizationModel model)
         {
-            return true;
+            return (OrganTin.Text != "" && OrganTrc.Text != ""
+                && OrgName.Text != "" && OrgType.Text != ""
+                && OrgFeature.Text != "" && OrgLoclity.Text != "");
         }
 
         /// <summary>
@@ -222,7 +276,7 @@ namespace ClientSideGrpc
             vaccineSelection.Visible = true;
             var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
             vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
-            buttonOk.Visible = true;
+            buttonSubmitVaccination.Visible = true;
         }
 
         /// <summary>
@@ -287,7 +341,7 @@ namespace ClientSideGrpc
                 animalSelection.Visible = true;
                 contractSelection.Visible = true;
                 vaccineSelection.Visible = true;
-                buttonOk.Visible = true;
+                buttonSubmitVaccination.Visible = true;
                 buttonCancel.Visible = true;
             }
             else
@@ -331,8 +385,8 @@ namespace ClientSideGrpc
             firstAtributeLabel.Text = "Поведение:";
             secondAtributeLabel.Visible = true;
             secondAtributeLabel.Text = "Состояние:";
-            thirdAtributeLabel.Visible = true; 
-            fifthAtributeLabel.Visible = true;           
+            thirdAtributeLabel.Visible = true;
+            fifthAtributeLabel.Visible = true;
             firstAtributeLabel.Visible = true;
             fourthAtributeLabel.Visible = true;
             sixthAtributeLabel.Visible = true;
@@ -359,7 +413,7 @@ namespace ClientSideGrpc
             Treatment.Visible = true;
             InspectionDate.Visible = true;
             Injuries.Visible = true;
-            buttonOk.Visible = true;
+            buttonSubmitVaccination.Visible = true;
             buttonCancel.Visible = true;
 
             //clientFacade.AddInspection(new AnimalHealth.Application.Models.InspectionAddModel());
@@ -512,23 +566,28 @@ namespace ClientSideGrpc
         private void HideAll()
         {
             dataGrid.DataSource = null;
+
             ContractAdd.Visible = false;
             ContractRemove.Visible = false;
             ContractEdit.Visible = false;
             ContractsGet.Visible = false;
             dataGrid.Visible = false;
+
             OrganisationAdd.Visible = false;
             OrganisationRemove.Visible = false;
             OrganisationEdit.Visible = false;
             OrganisationsGet.Visible = false;
+
             VaccinationAdd.Visible = false;
             VaccinationRemove.Visible = false;
             VaccinationEdit.Visible = false;
             VaccinationsGet.Visible = false;
+
             InspectionAdd.Visible = false;
             InspectionRemove.Visible = false;
             InspectionEdit.Visible = false;
             InspectionsGet.Visible = false;
+
             currentProccedure.Visible = false;
             fifthAtributeLabel.Visible = false;
             secondAtributeLabel.Visible = false;
@@ -536,14 +595,17 @@ namespace ClientSideGrpc
             thirdAtributeLabel.Visible = false;
             fourthAtributeLabel.Visible = false;
             sixthAtributeLabel.Visible = false;
+
             firstDate.Visible = false;
             secondDate.Visible = false;
             userSelection.Visible = false;
             animalSelection.Visible = false;
             contractSelection.Visible = false;
             vaccineSelection.Visible = false;
-            buttonOk.Visible = false;
+
+            buttonSubmitVaccination.Visible = false;
             buttonCancel.Visible = false;
+
             label1.Visible = false;
             label2.Visible = false;
             label3.Visible = false;
@@ -552,6 +614,7 @@ namespace ClientSideGrpc
             label6.Visible = false;
             label7.Visible = false;
             label8.Visible = false;
+
             Temperature.Visible = false;
             Skin.Visible = false;
             Fur.Visible = false;
@@ -560,6 +623,13 @@ namespace ClientSideGrpc
             Treatment.Visible = false;
             InspectionDate.Visible = false;
             Injuries.Visible = false;
+
+            OrganTin.Visible = false;
+            OrganTrc.Visible = false;
+            OrgName.Visible = false;
+            OrgType.Visible = false;
+            OrgFeature.Visible = false;
+            OrgLoclity.Visible = false;
         }
 
         /// <summary>
@@ -624,16 +694,66 @@ namespace ClientSideGrpc
         {
             var registry = currentProccedure.Text;
             HideAll();
-            switch(registry.Split(' ')[1])
+            switch (registry.Split(' ')[1])
             {
                 case "вакцинации":
-                    ClickVaccinationShow(null, null);
+                    ClickVaccinationShow(sender, e);
                     break;
                 case "осмотра":
-                    ClickInspectionShow(null, null);
+                    ClickInspectionShow(sender, e);
+                    break;
+                case "контракта":
+                    ClickContractsShow(sender, e);
+                    break;
+                case "организации":
+                    ClickOrganisationShow(sender, e);
                     break;
                 default:
+                    MessageBox.Show("Возникла пробелма!");
                     break;
+            }
+        }
+
+        private void buttonSubmitOrganisaiton_Click(object sender, EventArgs e)
+        {
+            var locals = clientFacade.GetLocalities(new Empty()).Localities;
+            var local = (from l in locals where l.Name == Convert.ToString(OrgLoclity.SelectedItem) select l).First();
+
+            if (labelIndex.Text != "Id")
+            {
+                var model = new OrganizationModel();
+                model.Tin = labelIndex.Text;
+                model.Trc = OrganTrc.Text;
+                model.Name = OrgName.Text;
+                model.Type = OrgType.Text;
+                model.Feature = OrgFeature.Text;
+                model.Locality = local;
+                if (IsCorrectOrganisation(model))
+                {
+                    clientFacade.EditOrganisation(model);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
+            }
+            else
+            {
+                var model = new OrganizationAddModel();
+                model.Tin = OrganTin.Text;
+                model.Trc = OrganTrc.Text;
+                model.Name = OrgName.Text;
+                model.Type = OrgType.Text;
+                model.Feature = OrgFeature.Text;
+                model.Locality = local;
+                if (IsCorrectOrganisation(new OrganizationModel()))
+                {
+                    clientFacade.AddOrganisation(model);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
             }
         }
     }

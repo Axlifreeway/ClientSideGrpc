@@ -70,7 +70,7 @@
             fifthAtributeLabel = new Label();
             sixthAtributeLabel = new Label();
             currentProccedure = new Label();
-            buttonOk = new Button();
+            buttonSubmitVaccination = new Button();
             buttonCancel = new Button();
             labelIndex = new Label();
             featureBehavior = new TextBox();
@@ -91,6 +91,13 @@
             label6 = new Label();
             label7 = new Label();
             label8 = new Label();
+            OrganTin = new TextBox();
+            OrganTrc = new TextBox();
+            OrgName = new TextBox();
+            OrgType = new TextBox();
+            OrgFeature = new TextBox();
+            OrgLoclity = new ComboBox();
+            buttonSubmitOrganisaiton = new Button();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGrid).BeginInit();
             SuspendLayout();
@@ -385,22 +392,22 @@
             // 
             // firstAtributeLabel
             // 
-            firstAtributeLabel.AutoSize = true;
             firstAtributeLabel.Location = new Point(89, 79);
             firstAtributeLabel.Name = "firstAtributeLabel";
             firstAtributeLabel.Size = new Size(104, 15);
             firstAtributeLabel.TabIndex = 26;
             firstAtributeLabel.Text = "Дата вакцинации:";
+            firstAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
             firstAtributeLabel.Visible = false;
             // 
             // secondAtributeLabel
             // 
-            secondAtributeLabel.AutoSize = true;
             secondAtributeLabel.Location = new Point(76, 108);
             secondAtributeLabel.Name = "secondAtributeLabel";
             secondAtributeLabel.Size = new Size(117, 15);
             secondAtributeLabel.TabIndex = 27;
             secondAtributeLabel.Text = "Дата ревакцинации:";
+            secondAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
             secondAtributeLabel.Visible = false;
             // 
             // firstDate
@@ -457,42 +464,42 @@
             // 
             // thirdAtributeLabel
             // 
-            thirdAtributeLabel.AutoSize = true;
             thirdAtributeLabel.Location = new Point(139, 136);
             thirdAtributeLabel.Name = "thirdAtributeLabel";
             thirdAtributeLabel.Size = new Size(54, 15);
             thirdAtributeLabel.TabIndex = 36;
             thirdAtributeLabel.Text = "Ветврач:";
+            thirdAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
             thirdAtributeLabel.Visible = false;
             // 
             // fourthAtributeLabel
             // 
-            fourthAtributeLabel.AutoSize = true;
             fourthAtributeLabel.Location = new Point(127, 166);
             fourthAtributeLabel.Name = "fourthAtributeLabel";
             fourthAtributeLabel.Size = new Size(66, 15);
             fourthAtributeLabel.TabIndex = 37;
             fourthAtributeLabel.Text = "Животное:";
+            fourthAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
             fourthAtributeLabel.Visible = false;
             // 
             // fifthAtributeLabel
             // 
-            fifthAtributeLabel.AutoSize = true;
             fifthAtributeLabel.Location = new Point(133, 195);
             fifthAtributeLabel.Name = "fifthAtributeLabel";
             fifthAtributeLabel.Size = new Size(60, 15);
             fifthAtributeLabel.TabIndex = 38;
             fifthAtributeLabel.Text = "Контракт:";
+            fifthAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
             fifthAtributeLabel.Visible = false;
             // 
             // sixthAtributeLabel
             // 
-            sixthAtributeLabel.AutoSize = true;
             sixthAtributeLabel.Location = new Point(139, 224);
             sixthAtributeLabel.Name = "sixthAtributeLabel";
             sixthAtributeLabel.Size = new Size(56, 15);
             sixthAtributeLabel.TabIndex = 39;
             sixthAtributeLabel.Text = "Вакцина:";
+            sixthAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
             sixthAtributeLabel.Visible = false;
             // 
             // currentProccedure
@@ -506,17 +513,17 @@
             currentProccedure.Text = "Добавление вакцинации";
             currentProccedure.Visible = false;
             // 
-            // buttonOk
+            // buttonSubmitVaccination
             // 
-            buttonOk.Font = new Font("Segoe UI", 12F);
-            buttonOk.Location = new Point(199, 253);
-            buttonOk.Name = "buttonOk";
-            buttonOk.Size = new Size(200, 32);
-            buttonOk.TabIndex = 41;
-            buttonOk.Text = "Подтвердить";
-            buttonOk.UseVisualStyleBackColor = true;
-            buttonOk.Visible = false;
-            buttonOk.Click += button1_Click;
+            buttonSubmitVaccination.Font = new Font("Segoe UI", 12F);
+            buttonSubmitVaccination.Location = new Point(199, 253);
+            buttonSubmitVaccination.Name = "buttonSubmitVaccination";
+            buttonSubmitVaccination.Size = new Size(200, 32);
+            buttonSubmitVaccination.TabIndex = 41;
+            buttonSubmitVaccination.Text = "Подтвердить";
+            buttonSubmitVaccination.UseVisualStyleBackColor = true;
+            buttonSubmitVaccination.Visible = false;
+            buttonSubmitVaccination.Click += button1_Click;
             // 
             // buttonCancel
             // 
@@ -704,11 +711,78 @@
             label8.Text = "Повреждение:";
             label8.Visible = false;
             // 
+            // OrganTin
+            // 
+            OrganTin.Location = new Point(199, 79);
+            OrganTin.Name = "OrganTin";
+            OrganTin.Size = new Size(200, 23);
+            OrganTin.TabIndex = 62;
+            OrganTin.Visible = false;
+            // 
+            // OrganTrc
+            // 
+            OrganTrc.Location = new Point(199, 108);
+            OrganTrc.Name = "OrganTrc";
+            OrganTrc.Size = new Size(200, 23);
+            OrganTrc.TabIndex = 63;
+            OrganTrc.Visible = false;
+            // 
+            // OrgName
+            // 
+            OrgName.Location = new Point(199, 137);
+            OrgName.Name = "OrgName";
+            OrgName.Size = new Size(200, 23);
+            OrgName.TabIndex = 64;
+            OrgName.Visible = false;
+            // 
+            // OrgType
+            // 
+            OrgType.Location = new Point(199, 166);
+            OrgType.Name = "OrgType";
+            OrgType.Size = new Size(200, 23);
+            OrgType.TabIndex = 65;
+            OrgType.Visible = false;
+            // 
+            // OrgFeature
+            // 
+            OrgFeature.Location = new Point(199, 195);
+            OrgFeature.Name = "OrgFeature";
+            OrgFeature.Size = new Size(200, 23);
+            OrgFeature.TabIndex = 66;
+            OrgFeature.Visible = false;
+            // 
+            // OrgLoclity
+            // 
+            OrgLoclity.FormattingEnabled = true;
+            OrgLoclity.Location = new Point(199, 224);
+            OrgLoclity.Name = "OrgLoclity";
+            OrgLoclity.Size = new Size(200, 23);
+            OrgLoclity.TabIndex = 67;
+            OrgLoclity.Visible = false;
+            // 
+            // buttonSubmitOrganisaiton
+            // 
+            buttonSubmitOrganisaiton.Font = new Font("Segoe UI", 12F);
+            buttonSubmitOrganisaiton.Location = new Point(199, 253);
+            buttonSubmitOrganisaiton.Name = "buttonSubmitOrganisaiton";
+            buttonSubmitOrganisaiton.Size = new Size(200, 32);
+            buttonSubmitOrganisaiton.TabIndex = 68;
+            buttonSubmitOrganisaiton.Text = "Подтвердить";
+            buttonSubmitOrganisaiton.UseVisualStyleBackColor = true;
+            buttonSubmitOrganisaiton.Click += buttonSubmitOrganisaiton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(buttonSubmitOrganisaiton);
+            Controls.Add(OrgLoclity);
+            Controls.Add(OrgFeature);
+            Controls.Add(OrgType);
+            Controls.Add(OrgName);
+            Controls.Add(OrganTrc);
+            Controls.Add(OrganTin);
             Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(label6);
@@ -729,7 +803,7 @@
             Controls.Add(featureBehavior);
             Controls.Add(labelIndex);
             Controls.Add(buttonCancel);
-            Controls.Add(buttonOk);
+            Controls.Add(buttonSubmitVaccination);
             Controls.Add(currentProccedure);
             Controls.Add(sixthAtributeLabel);
             Controls.Add(fifthAtributeLabel);
@@ -821,7 +895,7 @@
         private Label fifthAtributeLabel;
         private Label sixthAtributeLabel;
         private Label currentProccedure;
-        private Button buttonOk;
+        private Button buttonSubmitVaccination;
         private Button buttonCancel;
         private Label labelIndex;
         private TextBox featureBehavior;
@@ -842,5 +916,12 @@
         private Label label6;
         private Label label7;
         private Label label8;
+        private TextBox OrganTin;
+        private TextBox OrganTrc;
+        private TextBox OrgName;
+        private TextBox OrgType;
+        private TextBox OrgFeature;
+        private ComboBox OrgLoclity;
+        private Button buttonSubmitOrganisaiton;
     }
 }
