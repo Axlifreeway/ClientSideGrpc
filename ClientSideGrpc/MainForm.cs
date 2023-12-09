@@ -4,6 +4,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Reflection.PortableExecutable;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace ClientSideGrpc
 {
@@ -77,11 +78,13 @@ namespace ClientSideGrpc
             sixthAtributeLabel.Text = "Населённый пункт:";
             sixthAtributeLabel.Visible = true;
 
+            buttonSubmitOrganisaiton.Visible = true;
+
             var localities = clientFacade.GetLocalities(new Empty()).Localities;
             OrgLoclity.Items.AddRange((from l in localities select l.Name).ToArray());
 
             OrganTin.Visible = true;
-            OrganTin.ReadOnly =false;
+            OrganTin.ReadOnly = false;
             OrganTrc.Visible = true;
             OrgName.Visible = true;
             OrgType.Visible = true;
@@ -160,6 +163,11 @@ namespace ClientSideGrpc
                 OrgFeature.Text = selected.Cells[4].Value.ToString();
                 OrgLoclity.Visible = true;
                 OrgLoclity.Text = ((UserModel)(selected.Cells[5].Value)).Name;
+                buttonSubmitOrganisaiton.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Не выбран объект для изменения!");
             }
         }
 
@@ -188,7 +196,32 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonAddContract(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано. реализовать.");
+            HideAll();
+            currentProccedure.Text = "Добавление контракта";
+            currentProccedure.Visible = true;
+            firstAtributeLabel.Text = "Дата заключения:";
+            firstAtributeLabel.Visible = true;
+            secondAtributeLabel.Text = "Дата завершения:";
+            secondAtributeLabel.Visible = true;
+            thirdAtributeLabel.Text = "Исполнитель:";
+            thirdAtributeLabel.Visible = true;
+            fourthAtributeLabel.Text = "Заказчик:";
+            fourthAtributeLabel.Visible = true;
+            fifthAtributeLabel.Text = "Номер договора:";
+            fifthAtributeLabel.Visible = true;
+
+            firstDate.Visible = true;
+            secondDate.Visible = true;
+            userSelection.Visible = true;
+            animalSelection.Visible = true;
+            OrgFeature.Visible = true;
+            OrgFeature.ReadOnly = false;
+            ButtonSubmitContract.Visible = true;
+            buttonCancel.Visible = true;
+
+            var org = clientFacade.GetOrganisations(new Empty()).Organizations;
+            userSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
+            animalSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
         }
 
         /// <summary>
@@ -227,7 +260,46 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonEditContract(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
+            if (dataGrid.CurrentRow != null)
+            {
+                var selected = dataGrid.CurrentRow;
+                HideAll();
+                currentProccedure.Text = "Изменение контракта";
+                currentProccedure.Visible = true;
+                firstAtributeLabel.Text = "Дата заключения:";
+                firstAtributeLabel.Visible = true;
+                secondAtributeLabel.Text = "Дата завершения:";
+                secondAtributeLabel.Visible = true;
+                thirdAtributeLabel.Text = "Исполнитель:";
+                thirdAtributeLabel.Visible = true;
+                fourthAtributeLabel.Text = "Заказчик:";
+                fourthAtributeLabel.Visible = true;
+                fifthAtributeLabel.Text = "Номер договора:";
+                fifthAtributeLabel.Visible = true;
+
+                firstDate.Visible = true;
+                secondDate.Visible = true;
+                userSelection.Visible = true;
+                animalSelection.Visible = true;
+                OrgFeature.Visible = true;
+                OrgFeature.ReadOnly = true;
+                ButtonSubmitContract.Visible = true;
+                buttonCancel.Visible = true;
+
+                var org = clientFacade.GetOrganisations(new Empty()).Organizations;
+                userSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
+                animalSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
+
+                OrgFeature.Text = selected.Cells[0].Value.ToString();
+                firstDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[1].Value).Seconds).ToLocalTime();
+                secondDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[2].Value).Seconds).ToLocalTime();
+                userSelection.Text = ((OrganizationModel)selected.Cells[3].Value).Name;
+                animalSelection.Text = ((OrganizationModel)selected.Cells[4].Value).Name;
+            }
+            else
+            {
+                MessageBox.Show("Не выбран объект для изменения!");
+            }
         }
 
         /// <summary>
@@ -630,6 +702,8 @@ namespace ClientSideGrpc
             OrgType.Visible = false;
             OrgFeature.Visible = false;
             OrgLoclity.Visible = false;
+            buttonSubmitOrganisaiton.Visible = false;
+            ButtonSubmitContract.Visible = false;
         }
 
         /// <summary>
@@ -664,6 +738,7 @@ namespace ClientSideGrpc
                 if (isCorrectVaccination(model))
                 {
                     clientFacade.EditVaccination(model);
+                    buttonCancel_Click(sender, e);
                 }
                 else
                 {
@@ -682,6 +757,7 @@ namespace ClientSideGrpc
                 if (isCorrectVaccination(new VaccinationModel()))
                 {
                     clientFacade.AddVaccination(model);
+                    buttonCancel_Click(sender, e);
                 }
                 else
                 {
@@ -698,15 +774,19 @@ namespace ClientSideGrpc
             {
                 case "вакцинации":
                     ClickVaccinationShow(sender, e);
+                    ClickButtonGetVaccinations(sender, e);
                     break;
                 case "осмотра":
                     ClickInspectionShow(sender, e);
+                    ClickButtonGetInspections(sender, e);
                     break;
                 case "контракта":
                     ClickContractsShow(sender, e);
+                    ClickButtonGetContracts(sender, e);
                     break;
                 case "организации":
                     ClickOrganisationShow(sender, e);
+                    ClickButtonGetOrganisations(sender, e);
                     break;
                 default:
                     MessageBox.Show("Возникла пробелма!");
@@ -731,6 +811,7 @@ namespace ClientSideGrpc
                 if (IsCorrectOrganisation(model))
                 {
                     clientFacade.EditOrganisation(model);
+                    buttonCancel_Click(sender, e);
                 }
                 else
                 {
@@ -749,6 +830,51 @@ namespace ClientSideGrpc
                 if (IsCorrectOrganisation(new OrganizationModel()))
                 {
                     clientFacade.AddOrganisation(model);
+                    buttonCancel_Click(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
+            }
+        }
+
+        private void ButtonSubmitContract_Click(object sender, EventArgs e)
+        {
+            var organ = clientFacade.GetOrganisations(new Empty()).Organizations;
+            var exec = (from l in organ where l.Name == Convert.ToString(userSelection.SelectedItem) select l).First();
+            var contr = (from l in organ where l.Name == Convert.ToString(animalSelection.SelectedItem) select l).First();
+
+            if (labelIndex.Text != "Id")
+            {
+                var model = new ContractModel();
+                model.ConclusionDate = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)); ;
+                model.EndDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)); ;
+                model.Executor = exec;
+                model.Customer = contr;
+                model.Number = Convert.ToInt32(OrgFeature.Text);
+                if (IsCorrectContract(model))
+                {
+                    clientFacade.EditContract(model);
+                    buttonCancel_Click(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
+            }
+            else
+            {
+                var model = new ContractAddModel();
+                model.ConclusionDate = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)); ;
+                model.EndDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)); ;
+                model.Executor = exec;
+                model.Customer = contr;
+                model.Number = Convert.ToInt32(OrgFeature.Text);
+                if (IsCorrectContract(new ContractModel()))
+                {
+                    clientFacade.AddContract(model);
+                    buttonCancel_Click(sender, e);
                 }
                 else
                 {

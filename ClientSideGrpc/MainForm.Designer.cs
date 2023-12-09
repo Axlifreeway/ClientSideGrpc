@@ -98,6 +98,7 @@
             OrgFeature = new TextBox();
             OrgLoclity = new ComboBox();
             buttonSubmitOrganisaiton = new Button();
+            ButtonSubmitContract = new Button();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGrid).BeginInit();
             SuspendLayout();
@@ -392,9 +393,9 @@
             // 
             // firstAtributeLabel
             // 
-            firstAtributeLabel.Location = new Point(89, 79);
+            firstAtributeLabel.Location = new Point(34, 79);
             firstAtributeLabel.Name = "firstAtributeLabel";
-            firstAtributeLabel.Size = new Size(104, 15);
+            firstAtributeLabel.Size = new Size(159, 15);
             firstAtributeLabel.TabIndex = 26;
             firstAtributeLabel.Text = "Дата вакцинации:";
             firstAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -402,9 +403,9 @@
             // 
             // secondAtributeLabel
             // 
-            secondAtributeLabel.Location = new Point(76, 108);
+            secondAtributeLabel.Location = new Point(31, 108);
             secondAtributeLabel.Name = "secondAtributeLabel";
-            secondAtributeLabel.Size = new Size(117, 15);
+            secondAtributeLabel.Size = new Size(162, 15);
             secondAtributeLabel.TabIndex = 27;
             secondAtributeLabel.Text = "Дата ревакцинации:";
             secondAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -464,9 +465,9 @@
             // 
             // thirdAtributeLabel
             // 
-            thirdAtributeLabel.Location = new Point(139, 136);
+            thirdAtributeLabel.Location = new Point(31, 136);
             thirdAtributeLabel.Name = "thirdAtributeLabel";
-            thirdAtributeLabel.Size = new Size(54, 15);
+            thirdAtributeLabel.Size = new Size(162, 15);
             thirdAtributeLabel.TabIndex = 36;
             thirdAtributeLabel.Text = "Ветврач:";
             thirdAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -474,9 +475,9 @@
             // 
             // fourthAtributeLabel
             // 
-            fourthAtributeLabel.Location = new Point(127, 166);
+            fourthAtributeLabel.Location = new Point(31, 166);
             fourthAtributeLabel.Name = "fourthAtributeLabel";
-            fourthAtributeLabel.Size = new Size(66, 15);
+            fourthAtributeLabel.Size = new Size(162, 15);
             fourthAtributeLabel.TabIndex = 37;
             fourthAtributeLabel.Text = "Животное:";
             fourthAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -484,9 +485,9 @@
             // 
             // fifthAtributeLabel
             // 
-            fifthAtributeLabel.Location = new Point(133, 195);
+            fifthAtributeLabel.Location = new Point(34, 195);
             fifthAtributeLabel.Name = "fifthAtributeLabel";
-            fifthAtributeLabel.Size = new Size(60, 15);
+            fifthAtributeLabel.Size = new Size(159, 15);
             fifthAtributeLabel.TabIndex = 38;
             fifthAtributeLabel.Text = "Контракт:";
             fifthAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -494,9 +495,9 @@
             // 
             // sixthAtributeLabel
             // 
-            sixthAtributeLabel.Location = new Point(139, 224);
+            sixthAtributeLabel.Location = new Point(34, 224);
             sixthAtributeLabel.Name = "sixthAtributeLabel";
-            sixthAtributeLabel.Size = new Size(56, 15);
+            sixthAtributeLabel.Size = new Size(161, 15);
             sixthAtributeLabel.TabIndex = 39;
             sixthAtributeLabel.Text = "Вакцина:";
             sixthAtributeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -769,13 +770,27 @@
             buttonSubmitOrganisaiton.TabIndex = 68;
             buttonSubmitOrganisaiton.Text = "Подтвердить";
             buttonSubmitOrganisaiton.UseVisualStyleBackColor = true;
+            buttonSubmitOrganisaiton.Visible = false;
             buttonSubmitOrganisaiton.Click += buttonSubmitOrganisaiton_Click;
+            // 
+            // ButtonSubmitContract
+            // 
+            ButtonSubmitContract.Font = new Font("Segoe UI", 12F);
+            ButtonSubmitContract.Location = new Point(199, 253);
+            ButtonSubmitContract.Name = "ButtonSubmitContract";
+            ButtonSubmitContract.Size = new Size(200, 32);
+            ButtonSubmitContract.TabIndex = 69;
+            ButtonSubmitContract.Text = "Подтвердить";
+            ButtonSubmitContract.UseVisualStyleBackColor = true;
+            ButtonSubmitContract.Visible = false;
+            ButtonSubmitContract.Click += ButtonSubmitContract_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(ButtonSubmitContract);
             Controls.Add(buttonSubmitOrganisaiton);
             Controls.Add(OrgLoclity);
             Controls.Add(OrgFeature);
@@ -923,5 +938,6 @@
         private TextBox OrgFeature;
         private ComboBox OrgLoclity;
         private Button buttonSubmitOrganisaiton;
+        private Button ButtonSubmitContract;
     }
 }

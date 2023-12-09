@@ -17,7 +17,7 @@ namespace ClientSideGrpc
         /// </summary>
         public ClientFacade()
         {
-            var channel = GrpcChannel.ForAddress("http://192.168.1.2:8080");
+            var channel = GrpcChannel.ForAddress("http://localhost:8080");
             InspectionClient = new InspectionProto.InspectionProtoClient(channel);
             VaccinationClient = new VaccinationProto.VaccinationProtoClient(channel);
             ContractClient = new ContractProto.ContractProtoClient(channel);      
