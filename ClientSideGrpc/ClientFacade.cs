@@ -5,12 +5,12 @@ namespace ClientSideGrpc
 {
     public class ClientFacade
     {
-        private InspectionProto.InspectionProtoClient InspectionClient { get; set; }
-        private VaccinationProto.VaccinationProtoClient VaccinationClient { get; set; }
-        private ContractProto.ContractProtoClient ContractClient { get; set; }
-        private OrganizationProto.OrganizationProtoClient OrganisationClient { get; set; }
-        private OtherResourceProto.OtherResourceProtoClient OtherResourceClient { get; set; }
-
+        private InspectionProto.InspectionProtoClient inspectionClient { get; set; }
+        private VaccinationProto.VaccinationProtoClient vaccinationClient { get; set; }
+        private ContractProto.ContractProtoClient contractClient { get; set; }
+        private OrganizationProto.OrganizationProtoClient organisationClient { get; set; }
+        private OtherResourceProto.OtherResourceProtoClient otherResourceClient { get; set; }
+        private ReportProto.ReportProtoClient reportClient { get; set; }
 
         /// <summary>
         /// Конструктор фасада, инициализирующий подключение и клиентов
@@ -18,11 +18,12 @@ namespace ClientSideGrpc
         public ClientFacade()
         {
             var channel = GrpcChannel.ForAddress("http://localhost:8080");
-            InspectionClient = new InspectionProto.InspectionProtoClient(channel);
-            VaccinationClient = new VaccinationProto.VaccinationProtoClient(channel);
-            ContractClient = new ContractProto.ContractProtoClient(channel);      
-            OrganisationClient = new OrganizationProto.OrganizationProtoClient(channel);
-            OtherResourceClient = new OtherResourceProto.OtherResourceProtoClient(channel);
+            inspectionClient = new InspectionProto.InspectionProtoClient(channel);
+            vaccinationClient = new VaccinationProto.VaccinationProtoClient(channel);
+            contractClient = new ContractProto.ContractProtoClient(channel);      
+            organisationClient = new OrganizationProto.OrganizationProtoClient(channel);
+            otherResourceClient = new OtherResourceProto.OtherResourceProtoClient(channel);
+            reportClient = new ReportProto.ReportProtoClient(channel);
         }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddContract(ContractAddModel model)
         {
-            ContractClient.AddContract(model);
+            contractClient.AddContract(model);
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void DeleteContract(ContractLookup model)
         {
-            ContractClient.DeleteContract(model);
+            contractClient.DeleteContract(model);
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditContract(ContractModel model)
         {
-            ContractClient.UpdateContract(model);
+            contractClient.UpdateContract(model);
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace ClientSideGrpc
         /// </summary>
         public ContractModelList GetContracts(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return ContractClient.GetContracts(request);
+            return contractClient.GetContracts(request);
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddOrganisation(OrganizationAddModel model)
         {
-            OrganisationClient.AddOrganization(model);
+            organisationClient.AddOrganization(model);
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void DeleteOrganisation(OrganizationLookup model)
         {
-            OrganisationClient.DeleteOrganization(model);
+            organisationClient.DeleteOrganization(model);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditOrganisation(OrganizationModel model)
         {
-            OrganisationClient.UpdateOrganization(model);
+            organisationClient.UpdateOrganization(model);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace ClientSideGrpc
         /// </summary>
         public OrganizationModelList GetOrganisations(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return OrganisationClient.GetOrganizations(request);
+            return organisationClient.GetOrganizations(request);
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddVaccination(VaccinationAddModel model)
         {
-            VaccinationClient.AddVaccination(model);
+            vaccinationClient.AddVaccination(model);
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void DeleteVaccination(VaccinationLookup model)
         {
-            VaccinationClient.DeleteVaccination(model);
+            vaccinationClient.DeleteVaccination(model);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditVaccination(VaccinationModel model)
         {
-            VaccinationClient.UpdateVaccination(model);
+            vaccinationClient.UpdateVaccination(model);
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace ClientSideGrpc
         /// </summary>
         public VaccinationModelList GetVaccinations(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return VaccinationClient.GetVaccinations(request);
+            return vaccinationClient.GetVaccinations(request);
         }
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddInspection(InspectionAddModel model)
         {
-            InspectionClient.AddInspection(model);
+            inspectionClient.AddInspection(model);
         }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void DeleteInspection(InspectionLookup model)
         {
-            InspectionClient.DeleteInspection(model);
+            inspectionClient.DeleteInspection(model);
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditInspection(InspectionModel model)
         {
-            InspectionClient.UpdateInspection(model);
+            inspectionClient.UpdateInspection(model);
         }
 
         /// <summary>
@@ -150,7 +151,7 @@ namespace ClientSideGrpc
         /// </summary>
         public InspectionModelList GetInspections(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return InspectionClient.GetInspections(request);
+            return inspectionClient.GetInspections(request);
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace ClientSideGrpc
         /// </summary>
         public AnimalModelList GetAnimals(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return OtherResourceClient.GetAnimals(request);
+            return otherResourceClient.GetAnimals(request);
         }
 
         /// <summary>
@@ -166,7 +167,7 @@ namespace ClientSideGrpc
         /// </summary>
         public LocalityModelList GetLocalities(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return OtherResourceClient.GetLocalities(request);
+            return otherResourceClient.GetLocalities(request);
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace ClientSideGrpc
         /// </summary>
         public UserModelList GetUsers(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return OtherResourceClient.GetUsers(request);
+            return otherResourceClient.GetUsers(request);
         }
 
         /// <summary>
@@ -182,7 +183,7 @@ namespace ClientSideGrpc
         /// </summary>
         public VaccineModelList GetVaccines(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return OtherResourceClient.GetVaccines(request);
+            return otherResourceClient.GetVaccines(request);
         }
 
         /// <summary>
@@ -190,7 +191,56 @@ namespace ClientSideGrpc
         /// </summary>
         public DiseaseModelList GetDiseases(Google.Protobuf.WellKnownTypes.Empty request)
         {
-            return OtherResourceClient.GetDiseases(request);
+            return otherResourceClient.GetDiseases(request);
+        }
+
+        /// <summary>
+        /// Метод реестра осмотров для получения отчёта с группировкой по населённым пунктам и болезням.
+        /// </summary>
+        /// <param name="GetReport">Данные для формирования отчёта</typeparam>
+        public ReportModel GetDiseaseReport(GetReport request)
+        {
+            return inspectionClient.GetDiseaseReport(request);
+        }
+
+        /// <summary>
+        /// Метод реестра осмотров для получения отчёта с группировкой 
+        /// по населённым пунктам и типам животных.
+        /// </summary>
+        /// <param name="GetReport">Данные для формирования отчёта</typeparam>
+        public ReportModel GetAnimalTypeReport(GetReport request)
+        {
+            return inspectionClient.GetAnimalTypeReport(request);
+        }
+
+        /// <summary>
+        /// Метод реестра вакцинаций для получения отчёта с группировкой 
+        /// по населённым пунктам и типам животных.
+        /// </summary>
+        /// <param name="GetReport">Данные для формирования отчёта</typeparam>
+        public ReportModel GetVaccinationReport(GetReport request)
+        {
+            return vaccinationClient.GetVaccinationReport(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для получения отчётов пользователя
+        /// </summary>
+        /// <param name="ReportUserName">Данные пользователя</typeparam>
+        public ReportModelList GetReportList(ReportUserName request)
+        {
+            throw new NotImplementedException();            
+            return reportClient.GetReports(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для удаления пользователя
+        /// </summary>
+        /// <param name="ReportLookup">Id отчёта</typeparam>
+        public void DeleteReport(ReportLookup request)
+        {
+            throw new NotImplementedException();
+            reportClient.DeleteReport(request);
         }
     }
 }
