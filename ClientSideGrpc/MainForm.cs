@@ -131,6 +131,12 @@ namespace ClientSideGrpc
             if (dataGrid.CurrentRow != null)
             {
                 var selected = dataGrid.CurrentRow;
+                OrganTin.Text = selected.Cells[0].Value.ToString();
+                OrganTrc.Text = selected.Cells[1].Value.ToString();
+                OrgName.Text = selected.Cells[2].Value.ToString();
+                OrgType.Text = selected.Cells[3].Value.ToString();
+                OrgFeature.Text = selected.Cells[4].Value.ToString();
+                OrgLoclity.Text = ((UserModel)(selected.Cells[5].Value)).Name;
                 HideAll();
                 currentProccedure.Text = "Добавление организации";
                 currentProccedure.Visible = true;
@@ -152,17 +158,11 @@ namespace ClientSideGrpc
 
                 OrganTin.Visible = true;
                 OrganTin.ReadOnly = true;
-                OrganTin.Text = selected.Cells[0].Value.ToString();
                 OrganTrc.Visible = true;
-                OrganTrc.Text = selected.Cells[1].Value.ToString();
                 OrgName.Visible = true;
-                OrgName.Text = selected.Cells[2].Value.ToString();
                 OrgType.Visible = true;
-                OrgType.Text = selected.Cells[3].Value.ToString();
                 OrgFeature.Visible = true;
-                OrgFeature.Text = selected.Cells[4].Value.ToString();
                 OrgLoclity.Visible = true;
-                OrgLoclity.Text = ((UserModel)(selected.Cells[5].Value)).Name;
                 buttonSubmitOrganisaiton.Visible = true;
             }
             else
@@ -263,6 +263,11 @@ namespace ClientSideGrpc
             if (dataGrid.CurrentRow != null)
             {
                 var selected = dataGrid.CurrentRow;
+                OrgFeature.Text = selected.Cells[0].Value.ToString();
+                firstDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[1].Value).Seconds).ToLocalTime();
+                secondDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[2].Value).Seconds).ToLocalTime();
+                userSelection.Text = ((OrganizationModel)selected.Cells[3].Value).Name;
+                animalSelection.Text = ((OrganizationModel)selected.Cells[4].Value).Name;
                 HideAll();
                 currentProccedure.Text = "Изменение контракта";
                 currentProccedure.Visible = true;
@@ -289,12 +294,6 @@ namespace ClientSideGrpc
                 var org = clientFacade.GetOrganisations(new Empty()).Organizations;
                 userSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
                 animalSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
-
-                OrgFeature.Text = selected.Cells[0].Value.ToString();
-                firstDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[1].Value).Seconds).ToLocalTime();
-                secondDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[2].Value).Seconds).ToLocalTime();
-                userSelection.Text = ((OrganizationModel)selected.Cells[3].Value).Name;
-                animalSelection.Text = ((OrganizationModel)selected.Cells[4].Value).Name;
             }
             else
             {
@@ -308,13 +307,15 @@ namespace ClientSideGrpc
         /// </summary>
         public bool IsCorrectContract(ContractModel model)
         {
-            return true;
+            return (firstDate.Value <= secondDate.Value
+                && OrgFeature.Text != ""
+                && userSelection.Text != "" && animalSelection.Text != "");
         }
 
         /// <summary>
         /// Событие нажатия на кнопку получения списка контрактов
         /// </summary>
-        public void ClickButtonGetContracts(object sender, EventArgs e /*DateTime start, DateTime end*/)
+        public void ClickButtonGetContracts(object sender, EventArgs e)
         {
             var contractsList = clientFacade.GetContracts(new Google.Protobuf.WellKnownTypes.Empty());
             dataGrid.DataSource = contractsList.Contracts;
@@ -471,8 +472,6 @@ namespace ClientSideGrpc
             label6.Visible = true;
             label7.Visible = true;
             label8.Visible = true;
-            firstDate.Visible = true;
-            secondDate.Visible = true;
             userSelection.Visible = true;
             animalSelection.Visible = true;
             contractSelection.Visible = true;
@@ -485,10 +484,21 @@ namespace ClientSideGrpc
             Treatment.Visible = true;
             InspectionDate.Visible = true;
             Injuries.Visible = true;
-            buttonSubmitVaccination.Visible = true;
+            buttonSumbitInsection.Visible = true;
             buttonCancel.Visible = true;
 
-            //clientFacade.AddInspection(new AnimalHealth.Application.Models.InspectionAddModel());
+            var users = clientFacade.GetUsers(new Empty()).Users;
+            userSelection.Items.AddRange((from u in users select u.Name).ToArray());
+            animalSelection.Visible = true;
+            var animals = clientFacade.GetAnimals(new Empty()).Animals;
+            animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
+            contractSelection.Visible = true;
+            var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+            contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
+            vaccineSelection.Visible = true;
+            var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
+            vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
+            buttonSubmitVaccination.Visible = true;
         }
 
         /// <summary>
@@ -518,15 +528,82 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonEditInspection(object sender, EventArgs e)
         {
-            MessageBox.Show("Не реализовано");
-            //clientFacade.EditInspection(new AnimalHealth.Application.Models.InspectionAddModel());
+            if (dataGrid.CurrentRow != null)
+            {
+                var selected = dataGrid.CurrentRow;
+                labelIndex.Text = Convert.ToString(selected.Cells[0].Value);
+                featureBehavior.Text = Convert.ToString(selected.Cells[1].Value);
+                AnimalCondition.Text = Convert.ToString(selected.Cells[2].Value);
+                Temperature.Text = Convert.ToString(selected.Cells[3].Value);
+                NeedOperations.Checked = (bool)selected.Cells[4].Value;
+                Manipulations.Text = Convert.ToString(selected.Cells[5].Value);
+                Treatment.Text = Convert.ToString(selected.Cells[6].Value);
+                InspectionDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[7].Value).Seconds).ToLocalTime();
+                userSelection.Text = (string)selected.Cells[8].Value;
+                animalSelection.Text = (string)selected.Cells[9].Value;
+                contractSelection.Text = (string)selected.Cells[10].Value;
+                vaccineSelection.Text = (string)selected.Cells[11].Value;
+                Injuries.Text = Convert.ToString(selected.Cells[12].Value);
+                HideAll();
+                currentProccedure.Text = "Добавление осмотра";
+                currentProccedure.Visible = true;
+                firstAtributeLabel.Visible = true;
+                firstAtributeLabel.Text = "Поведение:";
+                secondAtributeLabel.Visible = true;
+                secondAtributeLabel.Text = "Состояние:";
+                thirdAtributeLabel.Visible = true;
+                fifthAtributeLabel.Visible = true;
+                firstAtributeLabel.Visible = true;
+                fourthAtributeLabel.Visible = true;
+                sixthAtributeLabel.Visible = true;
+                sixthAtributeLabel.Text = "Болезнь";
+                label1.Visible = true;
+                label2.Visible = true;
+                label3.Visible = true;
+                label4.Visible = true;
+                label5.Visible = true;
+                label6.Visible = true;
+                label7.Visible = true;
+                label8.Visible = true;
+                userSelection.Visible = true;
+                animalSelection.Visible = true;
+                contractSelection.Visible = true;
+                vaccineSelection.Visible = true;
+                Temperature.Visible = true;
+                Skin.Visible = true;
+                Fur.Visible = true;
+                NeedOperations.Visible = true;
+                Manipulations.Visible = true;
+                Treatment.Visible = true;
+                InspectionDate.Visible = true;
+                Injuries.Visible = true;
+                buttonSumbitInsection.Visible = true;
+                buttonCancel.Visible = true;
+
+                var users = clientFacade.GetUsers(new Empty()).Users;
+                userSelection.Items.AddRange((from u in users select u.Name).ToArray());
+                animalSelection.Visible = true;
+                var animals = clientFacade.GetAnimals(new Empty()).Animals;
+                animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
+                contractSelection.Visible = true;
+                var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+                contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
+                vaccineSelection.Visible = true;
+                var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
+                vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
+                buttonSubmitVaccination.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Сначала выберите строчку для изменения!");
+            }
         }
 
         /// <summary>
-        /// Проверка на пустые поля при добавлении или изменении организации.
-        /// принимает на вход новую модель организации.
-        /// </summary>
-        public bool isCorrectInspection(string Inspection)
+            /// Проверка на пустые поля при добавлении или изменении организации.
+            /// принимает на вход новую модель организации.
+            /// </summary>
+        public bool isCorrectInspection(InspectionModel model)
         {
             return true;
         }
@@ -704,6 +781,7 @@ namespace ClientSideGrpc
             OrgLoclity.Visible = false;
             buttonSubmitOrganisaiton.Visible = false;
             ButtonSubmitContract.Visible = false;
+            buttonSumbitInsection.Visible = false;
         }
 
         /// <summary>
@@ -874,6 +952,69 @@ namespace ClientSideGrpc
                 if (IsCorrectContract(new ContractModel()))
                 {
                     clientFacade.AddContract(model);
+                    buttonCancel_Click(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
+            }
+        }
+
+        private void buttonSumbitInsection_Click(object sender, EventArgs e)
+        {
+            var users = clientFacade.GetUsers(new Empty()).Users;
+            var user = (from u in users where u.Name == Convert.ToString(userSelection.SelectedItem) select u).First();
+            var animals = clientFacade.GetAnimals(new Empty()).Animals;
+            var animal = (from u in animals where u.Name == Convert.ToString(animalSelection.SelectedItem) select u).First();
+            var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+            var contract = (from u in contracts where u.Number == Convert.ToInt32(contractSelection.SelectedItem) select u).First();
+            var diseases = clientFacade.GetDiseases(new Empty()).Diseases;
+            var disease = (from u in diseases where u.Name == Convert.ToString(vaccineSelection.SelectedItem) select u).First();
+            if (labelIndex.Text != "Id")
+            {
+                var model = new InspectionModel();
+                model.Id = Convert.ToInt32(labelIndex.Text);
+                model.FeatureBehaviour = Convert.ToString(featureBehavior.Text);
+                model.AnimalCondition = Convert.ToString(AnimalCondition.Text);
+                model.Temperature = float.Parse(Temperature.Text);
+                model.IsNeedOperations = Convert.ToBoolean(NeedOperations.Checked);
+                model.Manipulations = Convert.ToString(Manipulations.Text);
+                model.Treatment = Convert.ToString(Treatment.Text);
+                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(InspectionDate.Value.Date, DateTimeKind.Utc));
+                model.User = user;
+                model.Animal = animal;
+                model.Contract = contract;
+                model.Disease = disease;
+                model.Injures = Convert.ToString(Injuries.Text);
+                if (isCorrectInspection(model))
+                {
+                    clientFacade.EditInspection(model);
+                    buttonCancel_Click(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("Введите недостающие данные!");
+                }
+            }
+            else
+            {
+                var model = new InspectionAddModel();
+                model.FeatureBehaviour = Convert.ToString(featureBehavior.Text);
+                model.AnimalCondition = Convert.ToString(AnimalCondition.Text);
+                model.Temperature = float.Parse(Temperature.Text);
+                model.IsNeedOperations = Convert.ToBoolean(NeedOperations.Checked);
+                model.Manipulations = Convert.ToString(Manipulations.Text);
+                model.Treatment = Convert.ToString(Treatment.Text);
+                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
+                model.User = user;
+                model.Animal = animal;
+                model.Contract = contract;
+                model.Disease = disease;
+                model.Injures = Convert.ToString(Injuries.Text);
+                if (isCorrectVaccination(new VaccinationModel()))
+                {
+                    clientFacade.AddInspection(model);
                     buttonCancel_Click(sender, e);
                 }
                 else

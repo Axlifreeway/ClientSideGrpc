@@ -99,6 +99,7 @@
             OrgLoclity = new ComboBox();
             buttonSubmitOrganisaiton = new Button();
             ButtonSubmitContract = new Button();
+            buttonSumbitInsection = new Button();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGrid).BeginInit();
             SuspendLayout();
@@ -785,11 +786,24 @@
             ButtonSubmitContract.Visible = false;
             ButtonSubmitContract.Click += ButtonSubmitContract_Click;
             // 
+            // buttonSumbitInsection
+            // 
+            buttonSumbitInsection.Font = new Font("Segoe UI", 12F);
+            buttonSumbitInsection.Location = new Point(199, 250);
+            buttonSumbitInsection.Name = "buttonSumbitInsection";
+            buttonSumbitInsection.Size = new Size(200, 35);
+            buttonSumbitInsection.TabIndex = 70;
+            buttonSumbitInsection.Text = "Подтвердить";
+            buttonSumbitInsection.UseVisualStyleBackColor = true;
+            buttonSumbitInsection.Visible = false;
+            buttonSumbitInsection.Click += buttonSumbitInsection_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(buttonSumbitInsection);
             Controls.Add(ButtonSubmitContract);
             Controls.Add(buttonSubmitOrganisaiton);
             Controls.Add(OrgLoclity);
@@ -939,5 +953,6 @@
         private ComboBox OrgLoclity;
         private Button buttonSubmitOrganisaiton;
         private Button ButtonSubmitContract;
+        private Button buttonSumbitInsection;
     }
 }
