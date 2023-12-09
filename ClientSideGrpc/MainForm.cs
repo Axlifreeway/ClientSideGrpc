@@ -25,6 +25,7 @@ namespace ClientSideGrpc
             âàêöèíàöèèToolStripMenuItem.Visible = false;
             îñìîòğûToolStripMenuItem.Visible = false;
             îò÷¸òÎToolStripMenuItem.Visible = false;
+            StartPosition = FormStartPosition.CenterScreen;
             clientFacade = new ClientFacade();
         }
 
@@ -33,9 +34,8 @@ namespace ClientSideGrpc
         /// </summary>
         public void Authorize(object sender, EventArgs e)
         {
-            if (textLogin.Text != "" && textPassword.Text != "")
+            if (textLogin.Text != "." && textPassword.Text != ".")
             {
-                MessageBox.Show("Âõîä â ñèñòåìó");
                 Text = "Ãëàâíàÿ ôîğìà";
                 Size = new System.Drawing.Size(816, 489);
                 labelAuth.Visible = false;
@@ -49,6 +49,7 @@ namespace ClientSideGrpc
                 âàêöèíàöèèToolStripMenuItem.Visible = true;
                 îñìîòğûToolStripMenuItem.Visible = true;
                 îò÷¸òÎToolStripMenuItem.Visible = true;
+                WindowState = FormWindowState.Maximized;
             }
             else
             {
