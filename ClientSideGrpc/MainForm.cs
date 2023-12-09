@@ -824,7 +824,7 @@ namespace ClientSideGrpc
         /// </summary>
         private void îò÷¸òÎToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var reports = new ReportForm();
+            var reports = new ReportForm(clientFacade);
             reports.ShowDialog();
         }
 
