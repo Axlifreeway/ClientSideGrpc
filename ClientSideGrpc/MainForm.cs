@@ -79,8 +79,10 @@ namespace ClientSideGrpc
             sixthAtributeLabel.Visible = true;
 
             buttonSubmitOrganisaiton.Visible = true;
+            buttonCancel.Visible = true;
 
             var localities = clientFacade.GetLocalities(new Empty()).Localities;
+            OrgLoclity.Items.Clear();
             OrgLoclity.Items.AddRange((from l in localities select l.Name).ToArray());
 
             OrganTin.Visible = true;
@@ -154,6 +156,7 @@ namespace ClientSideGrpc
                 sixthAtributeLabel.Visible = true;
 
                 var localities = clientFacade.GetLocalities(new Empty()).Localities;
+                OrgLoclity.Items.Clear();
                 OrgLoclity.Items.AddRange((from l in localities select l.Name).ToArray());
 
                 OrganTin.Visible = true;
@@ -164,6 +167,7 @@ namespace ClientSideGrpc
                 OrgFeature.Visible = true;
                 OrgLoclity.Visible = true;
                 buttonSubmitOrganisaiton.Visible = true;
+                buttonCancel.Visible = true;
             }
             else
             {
@@ -220,6 +224,8 @@ namespace ClientSideGrpc
             buttonCancel.Visible = true;
 
             var org = clientFacade.GetOrganisations(new Empty()).Organizations;
+            userSelection.Items.Clear();
+            animalSelection.Items.Clear();
             userSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
             animalSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
         }
@@ -292,6 +298,8 @@ namespace ClientSideGrpc
                 buttonCancel.Visible = true;
 
                 var org = clientFacade.GetOrganisations(new Empty()).Organizations;
+                userSelection.Items.Clear();
+                animalSelection.Items.Clear();
                 userSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
                 animalSelection.Items.AddRange((from c in org select c.Name.ToString()).ToArray());
             }
@@ -338,6 +346,10 @@ namespace ClientSideGrpc
             firstDate.Visible = true;
             secondDate.Visible = true;
             userSelection.Visible = true;
+            userSelection.Items.Clear();
+            animalSelection.Items.Clear();
+            contractSelection.Items.Clear();
+            vaccineSelection.Items.Clear();
             var users = clientFacade.GetUsers(new Empty()).Users;
             userSelection.Items.AddRange((from u in users select u.Name).ToArray());
             animalSelection.Visible = true;
@@ -350,6 +362,7 @@ namespace ClientSideGrpc
             var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
             vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
             buttonSubmitVaccination.Visible = true;
+            buttonCancel.Visible = true;
         }
 
         /// <summary>
@@ -391,6 +404,21 @@ namespace ClientSideGrpc
         {
             if (dataGrid.CurrentRow != null)
             {
+                userSelection.Items.Clear();
+                animalSelection.Items.Clear();
+                contractSelection.Items.Clear();
+                vaccineSelection.Items.Clear();
+                var users = clientFacade.GetUsers(new Empty()).Users;
+                userSelection.Items.AddRange((from u in users select u.Name).ToArray());
+                animalSelection.Visible = true;
+                var animals = clientFacade.GetAnimals(new Empty()).Animals;
+                animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
+                contractSelection.Visible = true;
+                var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+                contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
+                vaccineSelection.Visible = true;
+                var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
+                vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
                 var selected = dataGrid.CurrentRow;
                 labelIndex.Text = Convert.ToString(selected.Cells[0].Value);
                 firstDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[1].Value).Seconds).ToLocalTime();
@@ -486,7 +514,10 @@ namespace ClientSideGrpc
             Injuries.Visible = true;
             buttonSumbitInsection.Visible = true;
             buttonCancel.Visible = true;
-
+            userSelection.Items.Clear();
+            animalSelection.Items.Clear();
+            contractSelection.Items.Clear();
+            vaccineSelection.Items.Clear();
             var users = clientFacade.GetUsers(new Empty()).Users;
             userSelection.Items.AddRange((from u in users select u.Name).ToArray());
             animalSelection.Visible = true;
@@ -496,9 +527,10 @@ namespace ClientSideGrpc
             var contracts = clientFacade.GetContracts(new Empty()).Contracts;
             contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
             vaccineSelection.Visible = true;
-            var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
+            var vaccines = clientFacade.GetDiseases(new Empty()).Diseases;
             vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
             buttonSubmitVaccination.Visible = true;
+            buttonCancel.Visible = true;
         }
 
         /// <summary>
@@ -530,6 +562,21 @@ namespace ClientSideGrpc
         {
             if (dataGrid.CurrentRow != null)
             {
+                userSelection.Items.Clear();
+                animalSelection.Items.Clear();
+                contractSelection.Items.Clear();
+                vaccineSelection.Items.Clear();
+                var users = clientFacade.GetUsers(new Empty()).Users;
+                userSelection.Items.AddRange((from u in users select u.Name).ToArray());
+                animalSelection.Visible = true;
+                var animals = clientFacade.GetAnimals(new Empty()).Animals;
+                animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
+                contractSelection.Visible = true;
+                var contracts = clientFacade.GetContracts(new Empty()).Contracts;
+                contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
+                vaccineSelection.Visible = true;
+                var disease = clientFacade.GetDiseases(new Empty()).Diseases;
+                vaccineSelection.Items.AddRange((from v in disease select v.Name).ToArray());
                 var selected = dataGrid.CurrentRow;
                 labelIndex.Text = Convert.ToString(selected.Cells[0].Value);
                 featureBehavior.Text = Convert.ToString(selected.Cells[1].Value);
@@ -579,19 +626,6 @@ namespace ClientSideGrpc
                 Injuries.Visible = true;
                 buttonSumbitInsection.Visible = true;
                 buttonCancel.Visible = true;
-
-                var users = clientFacade.GetUsers(new Empty()).Users;
-                userSelection.Items.AddRange((from u in users select u.Name).ToArray());
-                animalSelection.Visible = true;
-                var animals = clientFacade.GetAnimals(new Empty()).Animals;
-                animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
-                contractSelection.Visible = true;
-                var contracts = clientFacade.GetContracts(new Empty()).Contracts;
-                contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
-                vaccineSelection.Visible = true;
-                var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
-                vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
-                buttonSubmitVaccination.Visible = true;
             }
             else
             {
