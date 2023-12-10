@@ -1,4 +1,5 @@
 ﻿using AnimalHealth.Application.Models;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
 
 namespace ClientSideGrpc
@@ -228,8 +229,7 @@ namespace ClientSideGrpc
         /// </summary>
         /// <param name="ReportUserName">Данные пользователя</typeparam>
         public ReportModelList GetReportList(ReportUserName request)
-        {
-            throw new NotImplementedException();            
+        {     
             return reportClient.GetReports(request);
         }
 
@@ -239,8 +239,24 @@ namespace ClientSideGrpc
         /// <param name="ReportLookup">Id отчёта</typeparam>
         public void DeleteReport(ReportLookup request)
         {
-            throw new NotImplementedException();
             reportClient.DeleteReport(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для получения данных об отчётах
+        /// </summary>
+        public ReportMetaData GetReportMetaData(Google.Protobuf.WellKnownTypes.Empty request)
+        {
+            return reportClient.GetReportMetaData(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для изменения состояния отчёта.
+        /// </summary>
+        /// <paramtype name="ReportStateModel">Сотояние отчёта и его Id</typeparam>
+        public void ChangeReportState(ReportStateModel requset)
+        {
+            reportClient.ChangeReportState(requset);
         }
     }
 }

@@ -52,8 +52,6 @@
             deleteButton = new Button();
             label4 = new Label();
             creatorUserLabel = new Label();
-            dateTimePicker3 = new DateTimePicker();
-            dateCreateReportLabel = new Label();
             checkBox1 = new CheckBox();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -138,8 +136,6 @@
             tableLayoutPanel1.Controls.Add(deleteButton, 7, 1);
             tableLayoutPanel1.Controls.Add(label4, 0, 3);
             tableLayoutPanel1.Controls.Add(creatorUserLabel, 1, 3);
-            tableLayoutPanel1.Controls.Add(dateTimePicker3, 3, 3);
-            tableLayoutPanel1.Controls.Add(dateCreateReportLabel, 2, 3);
             tableLayoutPanel1.Controls.Add(checkBox1, 6, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 24);
@@ -261,13 +257,18 @@
             // 
             // dataGridView1
             // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tableLayoutPanel1.SetColumnSpan(dataGridView1, 9);
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(3, 53);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(1110, 543);
             dataGridView1.TabIndex = 12;
+            dataGridView1.CellMouseDoubleClick += dataGridView1_CellMouseDoubleClick;
             // 
             // deleteButton
             // 
@@ -299,26 +300,6 @@
             creatorUserLabel.Size = new Size(144, 25);
             creatorUserLabel.TabIndex = 16;
             creatorUserLabel.Text = "label5";
-            // 
-            // dateTimePicker3
-            // 
-            dateTimePicker3.Dock = DockStyle.Fill;
-            dateTimePicker3.Location = new Point(453, 602);
-            dateTimePicker3.Margin = new Padding(3, 3, 3, 12);
-            dateTimePicker3.Name = "dateTimePicker3";
-            dateTimePicker3.Size = new Size(144, 23);
-            dateTimePicker3.TabIndex = 14;
-            // 
-            // dateCreateReportLabel
-            // 
-            dateCreateReportLabel.AutoSize = true;
-            dateCreateReportLabel.Dock = DockStyle.Fill;
-            dateCreateReportLabel.Location = new Point(310, 604);
-            dateCreateReportLabel.Margin = new Padding(10, 5, 3, 0);
-            dateCreateReportLabel.Name = "dateCreateReportLabel";
-            dateCreateReportLabel.Size = new Size(137, 20);
-            dateCreateReportLabel.TabIndex = 17;
-            dateCreateReportLabel.Text = "Дата создания отчёта";
             // 
             // checkBox1
             // 
@@ -374,10 +355,8 @@
         private Label approveLabel;
         private DataGridView dataGridView1;
         private Button deleteButton;
-        private DateTimePicker dateTimePicker3;
         private Label label4;
         private Label creatorUserLabel;
-        private Label dateCreateReportLabel;
         private CheckBox checkBox1;
     }
 }
