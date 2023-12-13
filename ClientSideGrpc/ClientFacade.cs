@@ -228,9 +228,9 @@ namespace ClientSideGrpc
         /// Метод реестра отчётов для получения отчётов пользователя
         /// </summary>
         /// <param name="ReportUserName">Данные пользователя</typeparam>
-        public ReportModelList GetReportList(ReportUserName request)
+        public ReportModel GetReport(ReportLookup request)
         {     
-            return reportClient.GetReports(request);
+            return reportClient.GetReport(request);
         }
 
         /// <summary>
@@ -243,20 +243,52 @@ namespace ClientSideGrpc
         }
 
         /// <summary>
+        /// Метод реестра отчётов для получения отчётов по пользователю
+        /// </summary>
+        public ReportModelList GetReportsByUser(UserModel request)
+        {
+            return reportClient.GetReportsByUser(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для получения отчётов по периоду дат.
+        /// </summary>
+        public ReportModelList GetReportsByPeriod(DatesPeriod request)
+        {
+            return reportClient.GetReportsByPeriod(request);
+        }
+
+
+        /// <summary>
+        /// Метод реестра отчётов для утверждения отчёта.
+        /// </summary>
+        public void ApproveReport(ChangeReportState request)
+        {
+            reportClient.ApproveReport(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для отправки отчёта.
+        /// </summary>
+        public void SendReport(ChangeReportState request)
+        {
+            reportClient.SendReport(request);
+        }
+
+        /// <summary>
+        /// Метод реестра отчётов для отмены подтверждения отчёта.
+        /// </summary>
+        public void CancelReport(ChangeReportState request)
+        {
+            reportClient.CancelReport(request);
+        }
+
+        /// <summary>
         /// Метод реестра отчётов для получения данных об отчётах
         /// </summary>
         public ReportMetaData GetReportMetaData(Google.Protobuf.WellKnownTypes.Empty request)
         {
             return reportClient.GetReportMetaData(request);
-        }
-
-        /// <summary>
-        /// Метод реестра отчётов для изменения состояния отчёта.
-        /// </summary>
-        /// <paramtype name="ReportStateModel">Сотояние отчёта и его Id</typeparam>
-        public void ChangeReportState(ReportStateModel requset)
-        {
-            reportClient.ChangeReportState(requset);
         }
     }
 }
