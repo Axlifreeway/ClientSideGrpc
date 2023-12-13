@@ -112,10 +112,7 @@ namespace ClientSideGrpc
                     deletemodel.Tin = deletedindex;
                     clientFacade.DeleteOrganisation(deletemodel);
 
-                    var newdata = (Google.Protobuf.Collections.RepeatedField<OrganizationModel>)dataGrid.DataSource;
-                    dataGrid.DataSource = null;
-                    newdata.RemoveAt(index);
-                    dataGrid.DataSource = newdata;
+                    ClickButtonGetOrganisations(sender, e);
 
                     dataGrid.Refresh();
                 }
@@ -194,6 +191,18 @@ namespace ClientSideGrpc
         {
             var organisationsList = clientFacade.GetOrganisations(new Empty());
             dataGrid.DataSource = organisationsList.Organizations;
+            dataGrid.Columns[0].DataPropertyName = "Tin";
+            dataGrid.Columns[0].HeaderText = "ИНН";
+            dataGrid.Columns[1].DataPropertyName = "Trc";
+            dataGrid.Columns[1].HeaderText = "КПП";
+            dataGrid.Columns[2].DataPropertyName = "Name";
+            dataGrid.Columns[2].HeaderText = "Название";
+            dataGrid.Columns[3].DataPropertyName = "Type";
+            dataGrid.Columns[3].HeaderText = "Тип";
+            dataGrid.Columns[4].DataPropertyName = "Feature";
+            dataGrid.Columns[4].HeaderText = "Особенность";
+            dataGrid.Columns[5].DataPropertyName = "Locality";
+            dataGrid.Columns[5].HeaderText = "Населённый пункт";
         }
 
         /// <summary>
@@ -238,21 +247,17 @@ namespace ClientSideGrpc
         public void ClickButtonRemoveContract(object sender, EventArgs e)
         {
             var selected = dataGrid.CurrentRow;
-            var index = selected.Index;
             if (dataGrid.CurrentRow != null)
             {
                 var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
                 if (message == DialogResult.Yes)
                 {
                     var deletedindex = (int)selected.Cells[0].Value;
-                    var deletemodel = new VaccinationLookup();
+                    var deletemodel = new ContractLookup();
                     deletemodel.Id = deletedindex;
-                    clientFacade.DeleteVaccination(deletemodel);
+                    clientFacade.DeleteContract(deletemodel);
 
-                    var newdata = (Google.Protobuf.Collections.RepeatedField<ContractModel>)dataGrid.DataSource;
-                    dataGrid.DataSource = null;
-                    newdata.RemoveAt(index);
-                    dataGrid.DataSource = newdata;
+                    ClickButtonGetContracts(sender, e);
 
                     dataGrid.Refresh();
                 }
@@ -328,8 +333,20 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonGetContracts(object sender, EventArgs e)
         {
-            var contractsList = clientFacade.GetContracts(new Google.Protobuf.WellKnownTypes.Empty());
+            var contractsList = clientFacade.GetContracts(new Empty());
             dataGrid.DataSource = contractsList.Contracts;
+            dataGrid.Columns[0].DataPropertyName = "Id";
+            dataGrid.Columns[0].Visible = false;
+            dataGrid.Columns[1].DataPropertyName = "Number";
+            dataGrid.Columns[1].HeaderText = "Номер";
+            dataGrid.Columns[2].DataPropertyName = "ConclusionDate";
+            dataGrid.Columns[2].HeaderText = "Дата заключения";
+            dataGrid.Columns[3].DataPropertyName = "EndDate";
+            dataGrid.Columns[3].HeaderText = "Дата окончания";
+            dataGrid.Columns[4].DataPropertyName = "Executor";
+            dataGrid.Columns[4].HeaderText = "Исполнитель";
+            dataGrid.Columns[5].DataPropertyName = "Customer";
+            dataGrid.Columns[5].HeaderText = "Заказчик";
         }
 
         /// <summary>
@@ -396,10 +413,7 @@ namespace ClientSideGrpc
                     deletemodel.Id = deletedindex;
                     clientFacade.DeleteVaccination(deletemodel);
 
-                    var newdata = (Google.Protobuf.Collections.RepeatedField<VaccinationModel>)dataGrid.DataSource;
-                    dataGrid.DataSource = null;
-                    newdata.RemoveAt(index);
-                    dataGrid.DataSource = newdata;
+                    ClickButtonGetVaccinations(sender, e);
 
                     dataGrid.Refresh();
                 }
@@ -465,8 +479,22 @@ namespace ClientSideGrpc
         /// </summary>
         public void ClickButtonGetVaccinations(object sender, EventArgs e)
         {
-            var vaccinationList = clientFacade.GetVaccinations(new Google.Protobuf.WellKnownTypes.Empty());
+            var vaccinationList = clientFacade.GetVaccinations(new Empty());
             dataGrid.DataSource = vaccinationList.Vaccinations;
+            dataGrid.Columns[0].DataPropertyName = "Id";
+            dataGrid.Columns[0].Visible = false;
+            dataGrid.Columns[1].DataPropertyName = "Date";
+            dataGrid.Columns[1].HeaderText = "Дата вакцинирования";
+            dataGrid.Columns[2].DataPropertyName = "ExpirationDate";
+            dataGrid.Columns[2].HeaderText = "Дата окончания";
+            dataGrid.Columns[3].DataPropertyName = "User";
+            dataGrid.Columns[3].HeaderText = "Ветврач";
+            dataGrid.Columns[4].DataPropertyName = "Animal";
+            dataGrid.Columns[4].HeaderText = "Животное";
+            dataGrid.Columns[5].DataPropertyName = "Contract";
+            dataGrid.Columns[5].HeaderText = "Контракт";
+            dataGrid.Columns[5].DataPropertyName = "Vaccine";
+            dataGrid.Columns[5].HeaderText = "Вакцина";
         }
 
         /// <summary>
@@ -551,6 +579,10 @@ namespace ClientSideGrpc
                     var deletemodel = new InspectionLookup();
                     deletemodel.Id = deletedindex;
                     clientFacade.DeleteInspection(deletemodel);
+
+                    ClickButtonGetInspections(sender, e);
+
+                    dataGrid.Refresh();
                 }
             }
             else
@@ -623,6 +655,36 @@ namespace ClientSideGrpc
         {
             var inspectionList = clientFacade.GetInspections(new Empty());
             dataGrid.DataSource = inspectionList.Inspections;
+            dataGrid.Columns[0].DataPropertyName = "Id";
+            dataGrid.Columns[0].Visible = false;
+            dataGrid.Columns[1].DataPropertyName = "FeatureBehaviour";
+            dataGrid.Columns[1].HeaderText = "Поведение";
+            dataGrid.Columns[2].DataPropertyName = "AnimalCondition";
+            dataGrid.Columns[2].HeaderText = "Состояние";
+            dataGrid.Columns[3].DataPropertyName = "Temperature";
+            dataGrid.Columns[3].HeaderText = "Температура";
+            dataGrid.Columns[4].DataPropertyName = "SkinCover";
+            dataGrid.Columns[4].HeaderText = "Кожный покров";
+            dataGrid.Columns[5].DataPropertyName = "FurCondition";
+            dataGrid.Columns[5].HeaderText = "Состояние меха";
+            dataGrid.Columns[6].DataPropertyName = "IsNeedOperations";
+            dataGrid.Columns[6].HeaderText = "Нужно вмешательство";
+            dataGrid.Columns[7].DataPropertyName = "Manipulations";
+            dataGrid.Columns[7].HeaderText = "Манипуляции";
+            dataGrid.Columns[8].DataPropertyName = "Treatment";
+            dataGrid.Columns[8].HeaderText = "Лечение";
+            dataGrid.Columns[9].DataPropertyName = "Date";
+            dataGrid.Columns[9].HeaderText = "Дата осмотра";
+            dataGrid.Columns[10].DataPropertyName = "User";
+            dataGrid.Columns[10].HeaderText = "Ветврач";
+            dataGrid.Columns[11].DataPropertyName = "Animal";
+            dataGrid.Columns[11].HeaderText = "Животное";
+            dataGrid.Columns[12].DataPropertyName = "Contract";
+            dataGrid.Columns[12].HeaderText = "Контракт";
+            dataGrid.Columns[13].DataPropertyName = "Disease";
+            dataGrid.Columns[13].HeaderText = "Болезнь";
+            dataGrid.Columns[14].DataPropertyName = "Injures";
+            dataGrid.Columns[14].HeaderText = "Повреждения";
         }
 
         /// <summary>
