@@ -13,6 +13,8 @@ namespace ClientSideGrpc
         private OtherResourceProto.OtherResourceProtoClient otherResourceClient { get; set; }
         private ReportProto.ReportProtoClient reportClient { get; set; }
 
+        private AuthProto.AuthProtoClient roleClient { get; set; }
+
         /// <summary>
         /// Конструктор фасада, инициализирующий подключение и клиентов
         /// </summary>
@@ -25,11 +27,12 @@ namespace ClientSideGrpc
             organisationClient = new OrganizationProto.OrganizationProtoClient(channel);
             otherResourceClient = new OtherResourceProto.OtherResourceProtoClient(channel);
             reportClient = new ReportProto.ReportProtoClient(channel);
+            roleClient = new AuthProto.AuthProtoClient(channel);
         }
 
-        public void Authorize()
+        public RoleModel Authorize(UserLoginModel user)
         {
-
+            return roleClient.Authorize(user);
         }
 
         /// <summary>

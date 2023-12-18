@@ -1,5 +1,6 @@
 using AnimalHealth.Application.Models;
 using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Data;
 using System.Diagnostics.Contracts;
@@ -10,7 +11,8 @@ namespace ClientSideGrpc
 {
     public partial class MainForm : Form
     {
-        private ClientFacade clientFacade;
+        private readonly ClientFacade clientFacade;
+        public RoleModel? role;
 
         /// <summary>
         /// Конструктор главной формы
@@ -34,10 +36,17 @@ namespace ClientSideGrpc
         /// </summary>
         public void Authorize(object sender, EventArgs e)
         {
-            if (textLogin.Text != "." && textPassword.Text != ".")
+            var client = new UserLoginModel()
             {
+                Login = textLogin.Text,
+                Password = textPassword.Text,
+            };
+            try
+            {
+                role = clientFacade.Authorize(client);
+                MessageBox.Show("Вы успешно авторизовались!");
                 Text = "Главная форма";
-                Size = new System.Drawing.Size(816, 489);
+                Size = new Size(816, 489);
                 labelAuth.Visible = false;
                 labelLogin.Visible = false;
                 labelPassword.Visible = false;
@@ -51,7 +60,7 @@ namespace ClientSideGrpc
                 отчётОToolStripMenuItem.Visible = true;
                 WindowState = FormWindowState.Maximized;
             }
-            else
+            catch(RpcException)
             {
                 MessageBox.Show("Не верный логин или пароль!");
             }
@@ -101,15 +110,16 @@ namespace ClientSideGrpc
         public void ClickButtonRemoveOrganisation(object sender, EventArgs e)
         {
             var selected = dataGrid.CurrentRow;
-            var index = selected.Index;
             if (dataGrid.CurrentRow != null)
             {
                 var message = MessageBox.Show("Вы уверены?", "Удаление", MessageBoxButtons.YesNo);
                 if (message == DialogResult.Yes)
                 {
                     var deletedindex = (string)selected.Cells[0].Value;
-                    var deletemodel = new OrganizationLookup();
-                    deletemodel.Tin = deletedindex;
+                    var deletemodel = new OrganizationLookup()
+                    {
+                        Tin = deletedindex
+                    };
                     clientFacade.DeleteOrganisation(deletemodel);
 
                     ClickButtonGetOrganisations(sender, e);
@@ -253,8 +263,10 @@ namespace ClientSideGrpc
                 if (message == DialogResult.Yes)
                 {
                     var deletedindex = (int)selected.Cells[0].Value;
-                    var deletemodel = new ContractLookup();
-                    deletemodel.Id = deletedindex;
+                    var deletemodel = new ContractLookup()
+                    { 
+                        Id = deletedindex
+                    };
                     clientFacade.DeleteContract(deletemodel);
 
                     ClickButtonGetContracts(sender, e);
@@ -409,8 +421,10 @@ namespace ClientSideGrpc
                 if (message == DialogResult.Yes)
                 {
                     var deletedindex = (int)selected.Cells[0].Value;
-                    var deletemodel = new VaccinationLookup();
-                    deletemodel.Id = deletedindex;
+                    var deletemodel = new VaccinationLookup()
+                    {
+                        Id = deletedindex
+                    };
                     clientFacade.DeleteVaccination(deletemodel);
 
                     ClickButtonGetVaccinations(sender, e);
@@ -576,8 +590,10 @@ namespace ClientSideGrpc
                 if (message == DialogResult.Yes)
                 {
                     var deletedindex = (int)dataGrid.CurrentRow.Cells[0].Value;
-                    var deletemodel = new InspectionLookup();
-                    deletemodel.Id = deletedindex;
+                    var deletemodel = new InspectionLookup()
+                    {
+                        Id = deletedindex
+                    };
                     clientFacade.DeleteInspection(deletemodel);
 
                     ClickButtonGetInspections(sender, e);
@@ -847,44 +863,44 @@ namespace ClientSideGrpc
             var vaccine = (from u in vaccines where u.Name == Convert.ToString(vaccineSelection.Text) select u).First();
             if (labelIndex.Text != "Id")
             {
-                var model = new VaccinationModel();
-                model.Id = Convert.ToInt32(labelIndex.Text);
-                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
-                model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
-                model.User = user;
-                model.Animal = animal;
-                model.Contract = contract;
-                model.Vaccine = vaccine;
+                var model = new VaccinationModel()
+                {
+                    Id = Convert.ToInt32(labelIndex.Text),
+                    Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)),
+                    ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)),
+                    User = user,
+                    Animal = animal,
+                    Contract = contract,
+                    Vaccine = vaccine
+                };
+                
                 if (isCorrectVaccination(model))
                 {
                     clientFacade.GetVaccinations(new Empty());
                     clientFacade.EditVaccination(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
             else
             {
-                var model = new VaccinationAddModel();
-                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
-                model.ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc));
-                model.User = user;
-                model.Animal = animal;
-                model.Contract = contract;
-                model.Vaccine = vaccine;
+                var model = new VaccinationAddModel()
+                {
+                    Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)),
+                    ExpirationDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)),
+                    User = user,
+                    Animal = animal,
+                    Contract = contract,
+                    Vaccine = vaccine
+                };
+                
                 if (isCorrectVaccination(new VaccinationModel()))
                 {
                     clientFacade.GetVaccinations(new Empty());
                     clientFacade.AddVaccination(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
         }
 
@@ -923,43 +939,43 @@ namespace ClientSideGrpc
 
             if (labelIndex.Text != "Id")
             {
-                var model = new OrganizationModel();
-                model.Tin = labelIndex.Text;
-                model.Trc = OrganTrc.Text;
-                model.Name = OrgName.Text;
-                model.Type = OrgType.Text;
-                model.Feature = OrgFeature.Text;
-                model.Locality = local;
+                var model = new OrganizationModel()
+                {
+                    Tin = labelIndex.Text,
+                    Trc = OrganTrc.Text,
+                    Name = OrgName.Text,
+                    Type = OrgType.Text,
+                    Feature = OrgFeature.Text,
+                    Locality = local
+                };
+                
                 if (IsCorrectOrganisation(model))
                 {
                     clientFacade.GetOrganisations(new Empty());
                     clientFacade.EditOrganisation(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
             else
             {
-                var model = new OrganizationAddModel();
-                model.Tin = OrganTin.Text;
-                model.Trc = OrganTrc.Text;
-                model.Name = OrgName.Text;
-                model.Type = OrgType.Text;
-                model.Feature = OrgFeature.Text;
-                model.Locality = local;
+                var model = new OrganizationAddModel()
+                {
+                    Tin = OrganTin.Text,
+                    Trc = OrganTrc.Text,
+                    Name = OrgName.Text,
+                    Type = OrgType.Text,
+                    Feature = OrgFeature.Text,
+                    Locality = local
+                };
+                
                 if (IsCorrectOrganisation(new OrganizationModel()))
                 {
                     clientFacade.AddOrganisation(model);
                     clientFacade.GetOrganisations(new Empty());
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
         }
 
@@ -971,42 +987,41 @@ namespace ClientSideGrpc
 
             if (labelIndex.Text != "Id")
             {
-                var model = new ContractModel();
-                model.Id = Convert.ToInt32(labelIndex.Text);
-                model.ConclusionDate = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)); ;
-                model.EndDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)); ;
-                model.Executor = exec;
-                model.Customer = contr;
-                model.Number = Convert.ToInt32(OrgFeature.Text);
+                var model = new ContractModel()
+                {
+                    Id = Convert.ToInt32(labelIndex.Text),
+                    ConclusionDate = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)),
+                    EndDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)),
+                    Executor = exec,
+                    Customer = contr,
+                    Number = Convert.ToInt32(OrgFeature.Text),
+                };
                 if (IsCorrectContract(model))
                 {
                     clientFacade.GetContracts(new Empty());
                     clientFacade.EditContract(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
             else
             {
-                var model = new ContractAddModel();
-                model.ConclusionDate = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)); ;
-                model.EndDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)); ;
-                model.Executor = exec;
-                model.Customer = contr;
-                model.Number = Convert.ToInt32(OrgFeature.Text);
+                var model = new ContractAddModel()
+                {
+                    ConclusionDate = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)),
+                    EndDate = Timestamp.FromDateTime(DateTime.SpecifyKind(secondDate.Value.Date, DateTimeKind.Utc)),
+                    Executor = exec,
+                    Customer = contr,
+                    Number = Convert.ToInt32(OrgFeature.Text)
+                };
+                
                 if (IsCorrectContract(new ContractModel()))
                 {
                     clientFacade.GetContracts(new Empty());
                     clientFacade.AddContract(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
         }
 
@@ -1022,56 +1037,56 @@ namespace ClientSideGrpc
             var disease = (from u in diseases where u.Name == Convert.ToString(vaccineSelection.Text) select u).First();
             if (labelIndex.Text != "Id")
             {
-                var model = new InspectionModel();
-                model.Id = Convert.ToInt32(labelIndex.Text);
-                model.FeatureBehaviour = Convert.ToString(featureBehavior.Text);
-                model.AnimalCondition = Convert.ToString(AnimalCondition.Text);
-                model.Temperature = float.Parse(Temperature.Text);
-                model.IsNeedOperations = Convert.ToBoolean(NeedOperations.Checked);
-                model.Manipulations = Convert.ToString(Manipulations.Text);
-                model.Treatment = Convert.ToString(Treatment.Text);
-                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(InspectionDate.Value.Date, DateTimeKind.Utc));
-                model.User = user;
-                model.Animal = animal;
-                model.Contract = contract;
-                model.Disease = disease;
-                model.Injures = Convert.ToString(Injuries.Text);
+                var model = new InspectionModel()
+                {
+                    Id = Convert.ToInt32(labelIndex.Text),
+                    FeatureBehaviour = Convert.ToString(featureBehavior.Text),
+                    AnimalCondition = Convert.ToString(AnimalCondition.Text),
+                    Temperature = float.Parse(Temperature.Text),
+                    IsNeedOperations = Convert.ToBoolean(NeedOperations.Checked),
+                    Manipulations = Convert.ToString(Manipulations.Text),
+                    Treatment = Convert.ToString(Treatment.Text),
+                    Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)),
+                    User = user,
+                    Animal = animal,
+                    Contract = contract,
+                    Disease = disease,
+                    Injures = Convert.ToString(Injuries.Text)
+                };
+
                 if (isCorrectInspection(model))
                 {
                     clientFacade.GetInspections(new Empty());
                     clientFacade.EditInspection(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
             else
             {
-                var model = new InspectionAddModel();
-                model.FeatureBehaviour = Convert.ToString(featureBehavior.Text);
-                model.AnimalCondition = Convert.ToString(AnimalCondition.Text);
-                model.Temperature = float.Parse(Temperature.Text);
-                model.IsNeedOperations = Convert.ToBoolean(NeedOperations.Checked);
-                model.Manipulations = Convert.ToString(Manipulations.Text);
-                model.Treatment = Convert.ToString(Treatment.Text);
-                model.Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc));
-                model.User = user;
-                model.Animal = animal;
-                model.Contract = contract;
-                model.Disease = disease;
-                model.Injures = Convert.ToString(Injuries.Text);
+                var model = new InspectionAddModel()
+                {
+                    FeatureBehaviour = Convert.ToString(featureBehavior.Text),
+                    AnimalCondition = Convert.ToString(AnimalCondition.Text),
+                    Temperature = float.Parse(Temperature.Text),
+                    IsNeedOperations = Convert.ToBoolean(NeedOperations.Checked),
+                    Manipulations = Convert.ToString(Manipulations.Text),
+                    Treatment = Convert.ToString(Treatment.Text),
+                    Date = Timestamp.FromDateTime(DateTime.SpecifyKind(firstDate.Value.Date, DateTimeKind.Utc)),
+                    User = user,
+                    Animal = animal,
+                    Contract = contract,
+                    Disease = disease,
+                    Injures = Convert.ToString(Injuries.Text)
+                };  
+                
                 if (isCorrectVaccination(new VaccinationModel()))
                 {
                     clientFacade.GetInspections(new Empty());
                     clientFacade.AddInspection(model);
                     buttonCancel_Click(sender, e);
                 }
-                else
-                {
-                    MessageBox.Show("Введите недостающие данные!");
-                }
+                else MessageBox.Show("Введите недостающие данные!");
             }
         }
     }
