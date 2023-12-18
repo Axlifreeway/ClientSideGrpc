@@ -47,9 +47,8 @@
             deleteButton = new Button();
             reportGenereteButton = new Button();
             openReportsButton = new Button();
-            approveButton = new Button();
-            cancelButton = new Button();
-            sendButton = new Button();
+            changeStateButton = new Button();
+            userComboBox = new ComboBox();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -125,12 +124,11 @@
             tableLayoutPanel1.Controls.Add(label2, 1, 0);
             tableLayoutPanel1.Controls.Add(label3, 2, 0);
             tableLayoutPanel1.Controls.Add(dataGridView1, 0, 2);
-            tableLayoutPanel1.Controls.Add(deleteButton, 7, 1);
+            tableLayoutPanel1.Controls.Add(deleteButton, 4, 1);
             tableLayoutPanel1.Controls.Add(reportGenereteButton, 3, 1);
             tableLayoutPanel1.Controls.Add(openReportsButton, 3, 0);
-            tableLayoutPanel1.Controls.Add(approveButton, 4, 1);
-            tableLayoutPanel1.Controls.Add(cancelButton, 5, 1);
-            tableLayoutPanel1.Controls.Add(sendButton, 6, 1);
+            tableLayoutPanel1.Controls.Add(changeStateButton, 5, 1);
+            tableLayoutPanel1.Controls.Add(userComboBox, 6, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 24);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -210,12 +208,13 @@
             dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(1316, 533);
             dataGridView1.TabIndex = 12;
+            dataGridView1.CellMouseClick += dataGridView1_CellMouseClick;
             dataGridView1.CellMouseDoubleClick += dataGridView1_CellMouseDoubleClick;
             // 
             // deleteButton
             // 
             deleteButton.Dock = DockStyle.Fill;
-            deleteButton.Location = new Point(953, 33);
+            deleteButton.Location = new Point(653, 33);
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(94, 24);
             deleteButton.TabIndex = 13;
@@ -243,35 +242,22 @@
             openReportsButton.UseVisualStyleBackColor = true;
             openReportsButton.Click += openReportsButton_Click;
             // 
-            // approveButton
+            // changeStateButton
             // 
-            approveButton.Location = new Point(653, 33);
-            approveButton.Name = "approveButton";
-            approveButton.Size = new Size(94, 23);
-            approveButton.TabIndex = 7;
-            approveButton.Text = "Утвердить";
-            approveButton.UseVisualStyleBackColor = true;
-            approveButton.Click += approveButton_Click;
+            changeStateButton.Location = new Point(753, 33);
+            changeStateButton.Name = "changeStateButton";
+            changeStateButton.Size = new Size(94, 23);
+            changeStateButton.TabIndex = 7;
+            changeStateButton.Text = "Утвердить";
+            changeStateButton.UseVisualStyleBackColor = true;
             // 
-            // cancelButton
+            // userComboBox
             // 
-            cancelButton.Location = new Point(753, 33);
-            cancelButton.Name = "cancelButton";
-            cancelButton.Size = new Size(94, 23);
-            cancelButton.TabIndex = 19;
-            cancelButton.Text = "Отменить";
-            cancelButton.UseVisualStyleBackColor = true;
-            cancelButton.Click += cancelButton_Click;
-            // 
-            // sendButton
-            // 
-            sendButton.Location = new Point(853, 33);
-            sendButton.Name = "sendButton";
-            sendButton.Size = new Size(94, 23);
-            sendButton.TabIndex = 8;
-            sendButton.Text = "Отравить";
-            sendButton.UseVisualStyleBackColor = true;
-            sendButton.Click += sendButton_Click;
+            userComboBox.FormattingEnabled = true;
+            userComboBox.Location = new Point(853, 33);
+            userComboBox.Name = "userComboBox";
+            userComboBox.Size = new Size(94, 23);
+            userComboBox.TabIndex = 14;
             // 
             // ReportForm
             // 
@@ -310,11 +296,10 @@
         private Label label2;
         private Label label3;
         private Button reportGenereteButton;
-        private Button approveButton;
-        private Button sendButton;
+        private Button changeStateButton;
         private Button openReportsButton;
         private DataGridView dataGridView1;
         private Button deleteButton;
-        private Button cancelButton;
+        private ComboBox userComboBox;
     }
 }
