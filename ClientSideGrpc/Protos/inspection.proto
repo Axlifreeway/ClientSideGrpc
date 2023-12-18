@@ -8,7 +8,6 @@ import "Protos/contract.proto";
 import "Protos/user.proto";
 import "Protos/animal.proto";
 import "Protos/infrastructure.proto";
-import "Protos/report.proto";
 
 service InspectionProto {
   rpc AddInspection(InspectionAddModel) returns (InspectionLookup);
@@ -16,8 +15,6 @@ service InspectionProto {
   rpc DeleteInspection(InspectionLookup) returns (DbSaveCondition);
   rpc GetInspection(InspectionLookup) returns (InspectionModel);
   rpc GetInspections(google.protobuf.Empty) returns (InspectionModelList);
-  rpc GetAnimalTypeReport(GetReport) returns (ReportModel);
-  rpc GetDiseaseReport(GetReport) returns (ReportModel);
 }
 
 message InspectionModelList {

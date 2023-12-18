@@ -8,7 +8,6 @@ import "Protos/contract.proto";
 import "Protos/user.proto";
 import "Protos/animal.proto";
 import "Protos/infrastructure.proto";
-import "Protos/report.proto";
 
 service VaccinationProto {
   rpc AddVaccination(VaccinationAddModel) returns (VaccinationLookup);
@@ -16,7 +15,6 @@ service VaccinationProto {
   rpc DeleteVaccination(VaccinationLookup) returns (DbSaveCondition);
   rpc GetVaccination(VaccinationLookup) returns (VaccinationModel);
   rpc GetVaccinations(google.protobuf.Empty) returns (VaccinationModelList);
-  rpc GetVaccinationReport(GetReport) returns (ReportModel);
 }
 
 message VaccinationModelList {

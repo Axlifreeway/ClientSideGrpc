@@ -27,6 +27,11 @@ namespace ClientSideGrpc
             reportClient = new ReportProto.ReportProtoClient(channel);
         }
 
+        public void Authorize()
+        {
+
+        }
+
         /// <summary>
         /// Метод фасада для добавления контракта принимает на вход модель контракта
         /// </summary>
@@ -54,7 +59,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для ... принимает на вход запрос протобаф
         /// </summary>
-        public ContractModelList GetContracts(Google.Protobuf.WellKnownTypes.Empty request)
+        public ContractModelList GetContracts(Empty request)
         {
             return contractClient.GetContracts(request);
         }
@@ -86,7 +91,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа организаций принимает на вход запрос протобаф
         /// </summary>
-        public OrganizationModelList GetOrganisations(Google.Protobuf.WellKnownTypes.Empty request)
+        public OrganizationModelList GetOrganisations(Empty request)
         {
             return organisationClient.GetOrganizations(request);
         }
@@ -118,7 +123,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа вакцинаций принимает на вход запрос протобаф
         /// </summary>
-        public VaccinationModelList GetVaccinations(Google.Protobuf.WellKnownTypes.Empty request)
+        public VaccinationModelList GetVaccinations(Empty request)
         {
             return vaccinationClient.GetVaccinations(request);
         }
@@ -150,7 +155,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
         /// </summary>
-        public InspectionModelList GetInspections(Google.Protobuf.WellKnownTypes.Empty request)
+        public InspectionModelList GetInspections(Empty request)
         {
             return inspectionClient.GetInspections(request);
         }
@@ -158,7 +163,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
         /// </summary>
-        public AnimalModelList GetAnimals(Google.Protobuf.WellKnownTypes.Empty request)
+        public AnimalModelList GetAnimals(Empty request)
         {
             return otherResourceClient.GetAnimals(request);
         }
@@ -166,7 +171,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
         /// </summary>
-        public LocalityModelList GetLocalities(Google.Protobuf.WellKnownTypes.Empty request)
+        public LocalityModelList GetLocalities(Empty request)
         {
             return otherResourceClient.GetLocalities(request);
         }
@@ -174,7 +179,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
         /// </summary>
-        public UserModelList GetUsers(Google.Protobuf.WellKnownTypes.Empty request)
+        public UserModelList GetUsers(Empty request)
         {
             return otherResourceClient.GetUsers(request);
         }
@@ -182,7 +187,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
         /// </summary>
-        public VaccineModelList GetVaccines(Google.Protobuf.WellKnownTypes.Empty request)
+        public VaccineModelList GetVaccines(Empty request)
         {
             return otherResourceClient.GetVaccines(request);
         }
@@ -190,7 +195,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод фасада для получения листа осмотров принимает на вход запрос протобаф
         /// </summary>
-        public DiseaseModelList GetDiseases(Google.Protobuf.WellKnownTypes.Empty request)
+        public DiseaseModelList GetDiseases(Empty request)
         {
             return otherResourceClient.GetDiseases(request);
         }
@@ -286,7 +291,7 @@ namespace ClientSideGrpc
         /// <summary>
         /// Метод реестра отчётов для получения данных об отчётах
         /// </summary>
-        public ReportMetaData GetReportMetaData(Google.Protobuf.WellKnownTypes.Empty request)
+        public ReportMetaData GetReportMetaData(Empty request)
         {
             return reportClient.GetReportMetaData(request);
         }
