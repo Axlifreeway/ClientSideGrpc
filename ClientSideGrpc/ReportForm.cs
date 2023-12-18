@@ -16,7 +16,6 @@ namespace ClientSideGrpc
             Name = "Вова",
         };
 
-
         bool watchStatus = true;
         Dictionary<string, MethodInfo> fuctions = new Dictionary<string, MethodInfo>();
         Dictionary<string, string> tags = new Dictionary<string, string>();
@@ -52,7 +51,12 @@ namespace ClientSideGrpc
                 columnNames.Add(data.RusReportNames[i], (data.RusColumnNames[0], data.RusColumnNames[i + 1]));
             }
             dataGridView1.AutoSize = true;
+            var users = _facade.GetUsers(new Empty()).Users.Select(x => _userMapper.Map(x)).ToArray();
+            userComboBox.Items.AddRange(users);
+            changeStateButton.Visible = false;
+            changeStateButton.Click += approveButton_Click;
         }
+
 
         private void reportGenereteButton_Click(object sender, EventArgs e)
         {
@@ -100,17 +104,12 @@ namespace ClientSideGrpc
 
         private void approveButton_Click(object sender, EventArgs e)
         {
-            ChangetState((changeReportState) => _facade.ApproveReport(changeReportState));
+            ChangeState((changeReportState) => _facade.ApproveReport(changeReportState));
         }
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            ChangetState((changeReportState) => _facade.SendReport(changeReportState));
-        }
-
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            ChangetState((changeReportState) => _facade.CancelReport(changeReportState));
+            ChangeState((changeReportState) => _facade.SendReport(changeReportState));
         }
 
         private void openReportsButton_Click(object sender, EventArgs e)
@@ -135,6 +134,8 @@ namespace ClientSideGrpc
             dataGridView1.Columns["Id"].Visible = false;
 
             watchStatus = false;
+
+            changeStateButton.Visible = true;
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -156,22 +157,17 @@ namespace ClientSideGrpc
             }
         }
 
-        private void ChangetState(Action<ChangeReportState> action)
+        private void ChangeState(Action<ChangeReportState> action)
         {
             try
             {
-                if (!watchStatus)
+                if (!watchStatus && userComboBox.SelectedItem != null)
                 {
                     var id = getIdFromDataGridRow();
                     if (id != -1)
                     {
-                        var request = new ChangeReportState
-                        {
-                            ReportId = id,
-                            Changer = user,
-                            DateChange = DateTime.Now.ToLocalTime().ToUniversalTime().ToTimestamp(),
-                            Receiver = null,
-                        };
+                        var currentReport = reports.Where(x => x.Id == id).First();
+                        var request = getRequestForChangeState(currentReport);
                         action(request);
                         UpdateRowDataGridView();
                     }
@@ -181,6 +177,30 @@ namespace ClientSideGrpc
             {
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private ChangeReportState getRequestForChangeState(ReportView report)
+        {
+            var request = new ChangeReportState
+            {
+                ReportId = report.Id,
+                Changer = _userMapper.Map(report.Creator),
+                DateChange = DateTime.Now.ToLocalTime().ToUniversalTime().ToTimestamp(),
+                Receiver = null,
+                SecondApprover = null,
+            };
+            switch (report.State.Name)
+            {
+                case "Черновик":
+                    request.SecondApprover = _userMapper.Map((UserView)userComboBox.SelectedItem);
+                    return request;
+                case "Одобрен":
+                    request.Receiver = _userMapper.Map((UserView)userComboBox.SelectedItem);
+                    return request;
+                case "Отправлен":
+                    return request;
+            }
+            return request;
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -255,11 +275,41 @@ namespace ClientSideGrpc
 
         private int getIdFromDataGridRow()
         {
-            if (dataGridView1.CurrentRow == null)
+            if (dataGridView1.CurrentCell == null)
                 MessageBox.Show("Выберите отчёт!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             else
-                return int.Parse(dataGridView1.CurrentRow.Cells["Id"].Value.ToString());
+                return int.Parse(dataGridView1.CurrentCell.OwningRow.Cells["Id"].Value.ToString());
             return -1;
+        }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (!watchStatus)
+            {
+                var id = getIdFromDataGridRow();
+                if(id != -1)
+                {
+                    var currentReport = reports.Where(x => x.Id == id).First();
+                    var name = currentReport.State.Name;
+                    changeStateButton.Click -= approveButton_Click;
+                    changeStateButton.Click -= sendButton_Click;
+                    switch (name)
+                    {
+                        case "Черновик":
+                            changeStateButton.Click += approveButton_Click;
+                            changeStateButton.Visible = true;
+                            break;
+                        case "Одобрен":
+                            changeStateButton.Click += sendButton_Click;
+                            changeStateButton.Text = "Отправить";
+                            changeStateButton.Visible = true;
+                            break;
+                        case "Отправлен":
+                            changeStateButton.Visible = false;
+                            break;
+                    }
+                }
+            }
         }
     }
 }

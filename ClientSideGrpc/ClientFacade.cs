@@ -284,14 +284,6 @@ namespace ClientSideGrpc
         }
 
         /// <summary>
-        /// Метод реестра отчётов для отмены подтверждения отчёта.
-        /// </summary>
-        public void CancelReport(ChangeReportState request)
-        {
-            reportClient.CancelReport(request);
-        }
-
-        /// <summary>
         /// Метод реестра отчётов для получения данных об отчётах
         /// </summary>
         public ReportMetaData GetReportMetaData(Empty request)
@@ -300,3 +292,4 @@ namespace ClientSideGrpc
         }
     }
 }
+    
