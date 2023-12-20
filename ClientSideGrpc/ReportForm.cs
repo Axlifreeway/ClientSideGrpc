@@ -10,11 +10,6 @@ namespace ClientSideGrpc
     {
         readonly ClientFacade _facade;
         RoleModel _role;
-        UserModel user = new UserModel
-        {
-            Id = 1,
-            Name = "Вова",
-        };
 
         bool watchStatus = true;
         Dictionary<string, MethodInfo> fuctions = new Dictionary<string, MethodInfo>();
@@ -29,18 +24,12 @@ namespace ClientSideGrpc
 
         public ReportForm(ClientFacade facade, RoleModel role)
         {
-            InitializeComponent();
-            _facade = facade;
-            _role = role;
-        }
-
-        public ReportForm(ClientFacade facade)
-        {
             _userMapper = new UserMapper();
             _reportValueMapper = new ReportValueMapper();
             _reportMapper = new ReportMapper(_userMapper, new ReportStateMapper(_userMapper), _reportValueMapper);
             InitializeComponent();
             _facade = facade;
+            _role = role;
             dateTimePicker1.Text = DateTime.Parse("12-12-2009").ToString();
             var data = _facade.GetReportMetaData(new Empty());
             reportTypesComboBox.Items.AddRange(data.RusReportNames.ToArray());
@@ -54,7 +43,7 @@ namespace ClientSideGrpc
             var users = _facade.GetUsers(new Empty()).Users.Select(x => _userMapper.Map(x)).ToArray();
             userComboBox.Items.AddRange(users);
             changeStateButton.Visible = false;
-            changeStateButton.Click += approveButton_Click;
+            changeStateButton.Click += changeReportStateButton_Click;
         }
 
 
@@ -74,7 +63,7 @@ namespace ClientSideGrpc
                 {
                     DateEnd = dateEnd,
                     DateStart = dateStart,
-                    UserCreator = user,
+                    UserCreator = _role.User,
                 };
 
                 var report = new ReportModel();
@@ -102,14 +91,26 @@ namespace ClientSideGrpc
             }
         }
 
-        private void approveButton_Click(object sender, EventArgs e)
+        private void changeReportStateButton_Click(object sender, EventArgs e)
         {
-            ChangeState((changeReportState) => _facade.ApproveReport(changeReportState));
-        }
-
-        private void sendButton_Click(object sender, EventArgs e)
-        {
-            ChangeState((changeReportState) => _facade.SendReport(changeReportState));
+            try
+            {
+                if (!watchStatus && userComboBox.SelectedItem != null)
+                {
+                    var id = getIdFromDataGridRow();
+                    if (id != -1)
+                    {
+                        var currentReport = reports.Where(x => x.Id == id).First();
+                        var request = getRequestForChangeState(currentReport);
+                        _facade.GoNextState(request);
+                        UpdateRowDataGridView();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void openReportsButton_Click(object sender, EventArgs e)
@@ -154,28 +155,6 @@ namespace ClientSideGrpc
                     reports.Remove(report);
                     UpdateDataSource();
                 }
-            }
-        }
-
-        private void ChangeState(Action<ChangeReportState> action)
-        {
-            try
-            {
-                if (!watchStatus && userComboBox.SelectedItem != null)
-                {
-                    var id = getIdFromDataGridRow();
-                    if (id != -1)
-                    {
-                        var currentReport = reports.Where(x => x.Id == id).First();
-                        var request = getRequestForChangeState(currentReport);
-                        action(request);
-                        UpdateRowDataGridView();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -291,16 +270,12 @@ namespace ClientSideGrpc
                 {
                     var currentReport = reports.Where(x => x.Id == id).First();
                     var name = currentReport.State.Name;
-                    changeStateButton.Click -= approveButton_Click;
-                    changeStateButton.Click -= sendButton_Click;
                     switch (name)
                     {
                         case "Черновик":
-                            changeStateButton.Click += approveButton_Click;
                             changeStateButton.Visible = true;
                             break;
                         case "Одобрен":
-                            changeStateButton.Click += sendButton_Click;
                             changeStateButton.Text = "Отправить";
                             changeStateButton.Visible = true;
                             break;

@@ -268,19 +268,11 @@ namespace ClientSideGrpc
 
 
         /// <summary>
-        /// Метод реестра отчётов для утверждения отчёта.
+        /// Метод реестра отчётов для изменения состояния отчёта.
         /// </summary>
-        public void ApproveReport(ChangeReportState request)
+        public void GoNextState(ChangeReportState request)
         {
-            reportClient.ApproveReport(request);
-        }
-
-        /// <summary>
-        /// Метод реестра отчётов для отправки отчёта.
-        /// </summary>
-        public void SendReport(ChangeReportState request)
-        {
-            reportClient.SendReport(request);
+            reportClient.GoNextState(request);
         }
 
         /// <summary>
