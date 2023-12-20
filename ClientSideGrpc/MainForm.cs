@@ -146,7 +146,7 @@ namespace ClientSideGrpc
                 OrgName.Text = selected.Cells[2].Value.ToString();
                 OrgType.Text = selected.Cells[3].Value.ToString();
                 OrgFeature.Text = selected.Cells[4].Value.ToString();
-                OrgLoclity.Text = ((UserModel)(selected.Cells[5].Value)).Name;
+                OrgLoclity.Text = ((LocalityModel)(selected.Cells[5].Value)).Name;
                 HideAll();
                 currentProccedure.Text = "Добавление организации";
                 currentProccedure.Visible = true;
@@ -239,7 +239,7 @@ namespace ClientSideGrpc
             userSelection.Visible = true;
             animalSelection.Visible = true;
             OrgFeature.Visible = true;
-            OrgFeature.ReadOnly = false;
+            OrgFeature.Text = "";
             ButtonSubmitContract.Visible = true;
             buttonCancel.Visible = true;
 
@@ -462,10 +462,10 @@ namespace ClientSideGrpc
                 labelIndex.Text = Convert.ToString(selected.Cells[0].Value);
                 firstDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[1].Value).Seconds).ToLocalTime();
                 secondDate.Value = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(((Timestamp)selected.Cells[2].Value).Seconds).ToLocalTime();
-                userSelection.Text = (string)selected.Cells[3].Value;
-                animalSelection.Text = (string)selected.Cells[4].Value;
-                contractSelection.Text = (string)selected.Cells[5].Value;
-                vaccineSelection.Text = (string)selected.Cells[6].Value;
+                userSelection.Text = ((UserModel)selected.Cells[3].Value).Name;
+                animalSelection.Text = ((AnimalModel)selected.Cells[4].Value).Name;
+                contractSelection.Text = ((ContractModel)selected.Cells[5].Value).Number.ToString();
+                vaccineSelection.Text = ((VaccineModel)selected.Cells[6].Value).Name;
                 VaccineForm();
             }
             else
@@ -507,8 +507,8 @@ namespace ClientSideGrpc
             dataGrid.Columns[4].HeaderText = "Животное";
             dataGrid.Columns[5].DataPropertyName = "Contract";
             dataGrid.Columns[5].HeaderText = "Контракт";
-            dataGrid.Columns[5].DataPropertyName = "Vaccine";
-            dataGrid.Columns[5].HeaderText = "Вакцина";
+            dataGrid.Columns[6].DataPropertyName = "Vaccine";
+            dataGrid.Columns[6].HeaderText = "Вакцина";
         }
 
         /// <summary>
@@ -805,9 +805,13 @@ namespace ClientSideGrpc
             firstDate.Visible = false;
             secondDate.Visible = false;
             userSelection.Visible = false;
+            userSelection.Text = "";
             animalSelection.Visible = false;
+            animalSelection.Text = "";
             contractSelection.Visible = false;
+            contractSelection.Text = "";
             vaccineSelection.Visible = false;
+            vaccineSelection.Text = "";
 
             buttonSubmitVaccination.Visible = false;
             buttonCancel.Visible = false;
@@ -937,11 +941,11 @@ namespace ClientSideGrpc
             var locals = clientFacade.GetLocalities(new Empty()).Localities;
             var local = (from l in locals where l.Name == Convert.ToString(OrgLoclity.Text) select l).First();
 
-            if (labelIndex.Text != "Id")
+            if (OrganTin.ReadOnly)
             {
                 var model = new OrganizationModel()
                 {
-                    Tin = labelIndex.Text,
+                    Tin = OrganTin.Text,
                     Trc = OrganTrc.Text,
                     Name = OrgName.Text,
                     Type = OrgType.Text,

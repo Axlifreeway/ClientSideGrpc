@@ -40,6 +40,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddContract(ContractAddModel model)
         {
+            contractClient.GetContracts(new Empty());
             contractClient.AddContract(model);
         }
 
@@ -56,6 +57,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditContract(ContractModel model)
         {
+            contractClient.GetContracts(new Empty());
             contractClient.UpdateContract(model);
         }
 
@@ -72,6 +74,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddOrganisation(OrganizationAddModel model)
         {
+            organisationClient.GetOrganizations(new Empty());
             organisationClient.AddOrganization(model);
         }
 
@@ -88,6 +91,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditOrganisation(OrganizationModel model)
         {
+            organisationClient.GetOrganizations(new Empty());
             organisationClient.UpdateOrganization(model);
         }
 
@@ -104,6 +108,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddVaccination(VaccinationAddModel model)
         {
+            vaccinationClient.GetVaccinations(new Empty());
             vaccinationClient.AddVaccination(model);
         }
 
@@ -120,6 +125,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditVaccination(VaccinationModel model)
         {
+            vaccinationClient.GetVaccinations(new Empty());
             vaccinationClient.UpdateVaccination(model);
         }
 
@@ -136,6 +142,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void AddInspection(InspectionAddModel model)
         {
+            inspectionClient.GetInspections(new Empty());
             inspectionClient.AddInspection(model);
         }
 
@@ -152,6 +159,7 @@ namespace ClientSideGrpc
         /// </summary>
         public void EditInspection(InspectionModel model)
         {
+            inspectionClient.GetInspections(new Empty());
             inspectionClient.UpdateInspection(model);
         }
 
