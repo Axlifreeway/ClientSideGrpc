@@ -273,6 +273,7 @@ namespace ClientSideGrpc
                     switch (name)
                     {
                         case "Черновик":
+                            changeStateButton.Text = "Утвердить";
                             changeStateButton.Visible = true;
                             break;
                         case "Одобрен":
