@@ -636,11 +636,11 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(453, 79);
+            label1.Location = new Point(504, 82);
             label1.Name = "label1";
-            label1.Size = new Size(132, 15);
+            label1.Size = new Size(81, 15);
             label1.TabIndex = 54;
-            label1.Text = "Состояние животного:";
+            label1.Text = "Температура:";
             label1.Visible = false;
             // 
             // label2
@@ -873,6 +873,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
             Text = "Главная форма";
+            Load += MainForm_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGrid).EndInit();

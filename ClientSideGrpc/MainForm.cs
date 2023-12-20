@@ -60,7 +60,7 @@ namespace ClientSideGrpc
                 отчётОToolStripMenuItem.Visible = true;
                 WindowState = FormWindowState.Maximized;
             }
-            catch(RpcException)
+            catch (RpcException)
             {
                 MessageBox.Show("Не верный логин или пароль!");
             }
@@ -264,7 +264,7 @@ namespace ClientSideGrpc
                 {
                     var deletedindex = (int)selected.Cells[0].Value;
                     var deletemodel = new ContractLookup()
-                    { 
+                    {
                         Id = deletedindex
                     };
                     clientFacade.DeleteContract(deletemodel);
@@ -372,13 +372,13 @@ namespace ClientSideGrpc
             contractSelection.Items.Clear();
             vaccineSelection.Items.Clear();
             var users = clientFacade.GetUsers(new Empty()).Users;
-            userSelection.Items.AddRange((from u in users select u.Name).ToArray());          
+            userSelection.Items.AddRange((from u in users select u.Name).ToArray());
             var animals = clientFacade.GetAnimals(new Empty()).Animals;
-            animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());        
+            animalSelection.Items.AddRange((from a in animals select a.Name).ToArray());
             var contracts = clientFacade.GetContracts(new Empty()).Contracts;
-            contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());            
+            contractSelection.Items.AddRange((from c in contracts select c.Number.ToString()).ToArray());
             var vaccines = clientFacade.GetVaccines(new Empty()).Vaccines;
-            vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());            
+            vaccineSelection.Items.AddRange((from v in vaccines select v.Name).ToArray());
         }
 
         private void VaccineForm()
@@ -652,9 +652,9 @@ namespace ClientSideGrpc
         }
 
         /// <summary>
-            /// Проверка на пустые поля при добавлении или изменении организации.
-            /// принимает на вход новую модель организации.
-            /// </summary>
+        /// Проверка на пустые поля при добавлении или изменении организации.
+        /// принимает на вход новую модель организации.
+        /// </summary>
         public bool isCorrectInspection(InspectionModel model)
         {
             return userSelection.Text != "" && animalSelection.Text != ""
@@ -877,12 +877,19 @@ namespace ClientSideGrpc
                     Contract = contract,
                     Vaccine = vaccine
                 };
-                
+
                 if (isCorrectVaccination(model))
                 {
-                    clientFacade.GetVaccinations(new Empty());
-                    clientFacade.EditVaccination(model);
-                    buttonCancel_Click(sender, e);
+                    try
+                    {
+                        clientFacade.GetVaccinations(new Empty());
+                        clientFacade.EditVaccination(model);
+                        buttonCancel_Click(sender, e);
+                    }
+                    catch (RpcException)
+                    {
+                        button1_Click(sender, e);
+                    }
                 }
                 else MessageBox.Show("Введите недостающие данные!");
             }
@@ -897,42 +904,22 @@ namespace ClientSideGrpc
                     Contract = contract,
                     Vaccine = vaccine
                 };
-                
+
                 if (isCorrectVaccination(new VaccinationModel()))
                 {
-                    clientFacade.GetVaccinations(new Empty());
-                    clientFacade.AddVaccination(model);
-                    buttonCancel_Click(sender, e);
+                    try
+                    {
+                        clientFacade.GetVaccinations(new Empty());
+                        clientFacade.AddVaccination(model);
+                        buttonCancel_Click(sender, e);
+                    }
+                    catch (Exception)
+                    {
+                        button1_Click(sender, e);
+                    }
+                    
                 }
                 else MessageBox.Show("Введите недостающие данные!");
-            }
-        }
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            var registry = currentProccedure.Text;
-            HideAll();
-            switch (registry.Split(' ')[1])
-            {
-                case "вакцинации":
-                    ClickVaccinationShow(sender, e);
-                    ClickButtonGetVaccinations(sender, e);
-                    break;
-                case "осмотра":
-                    ClickInspectionShow(sender, e);
-                    ClickButtonGetInspections(sender, e);
-                    break;
-                case "контракта":
-                    ClickContractsShow(sender, e);
-                    ClickButtonGetContracts(sender, e);
-                    break;
-                case "организации":
-                    ClickOrganisationShow(sender, e);
-                    ClickButtonGetOrganisations(sender, e);
-                    break;
-                default:
-                    MessageBox.Show("Возникла пробелма!");
-                    break;
             }
         }
 
@@ -952,7 +939,7 @@ namespace ClientSideGrpc
                     Feature = OrgFeature.Text,
                     Locality = local
                 };
-                
+
                 if (IsCorrectOrganisation(model))
                 {
                     clientFacade.GetOrganisations(new Empty());
@@ -972,7 +959,7 @@ namespace ClientSideGrpc
                     Feature = OrgFeature.Text,
                     Locality = local
                 };
-                
+
                 if (IsCorrectOrganisation(new OrganizationModel()))
                 {
                     clientFacade.AddOrganisation(model);
@@ -1018,7 +1005,7 @@ namespace ClientSideGrpc
                     Customer = contr,
                     Number = Convert.ToInt32(OrgFeature.Text)
                 };
-                
+
                 if (IsCorrectContract(new ContractModel()))
                 {
                     clientFacade.GetContracts(new Empty());
@@ -1060,9 +1047,16 @@ namespace ClientSideGrpc
 
                 if (isCorrectInspection(model))
                 {
-                    clientFacade.GetInspections(new Empty());
-                    clientFacade.EditInspection(model);
-                    buttonCancel_Click(sender, e);
+                    try
+                    {
+                        clientFacade.GetInspections(new Empty());
+                        clientFacade.EditInspection(model);
+                        buttonCancel_Click(sender, e);
+                    }
+                    catch (RpcException)
+                    {
+                        buttonSumbitInsection_Click(sender, e);
+                    }
                 }
                 else MessageBox.Show("Введите недостающие данные!");
             }
@@ -1082,16 +1076,57 @@ namespace ClientSideGrpc
                     Contract = contract,
                     Disease = disease,
                     Injures = Convert.ToString(Injuries.Text)
-                };  
-                
+                };
+
                 if (isCorrectVaccination(new VaccinationModel()))
                 {
-                    clientFacade.GetInspections(new Empty());
-                    clientFacade.AddInspection(model);
-                    buttonCancel_Click(sender, e);
+                    try
+                    {
+                        clientFacade.GetInspections(new Empty());
+                        clientFacade.AddInspection(model);
+                        buttonCancel_Click(sender, e);
+                    }
+                    catch (RpcException)
+                    {
+                        buttonSumbitInsection_Click(sender, e);
+                    }
+                    
                 }
                 else MessageBox.Show("Введите недостающие данные!");
             }
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            var registry = currentProccedure.Text;
+            HideAll();
+            switch (registry.Split(' ')[1])
+            {
+                case "вакцинации":
+                    ClickVaccinationShow(sender, e);
+                    ClickButtonGetVaccinations(sender, e);
+                    break;
+                case "осмотра":
+                    ClickInspectionShow(sender, e);
+                    ClickButtonGetInspections(sender, e);
+                    break;
+                case "контракта":
+                    ClickContractsShow(sender, e);
+                    ClickButtonGetContracts(sender, e);
+                    break;
+                case "организации":
+                    ClickOrganisationShow(sender, e);
+                    ClickButtonGetOrganisations(sender, e);
+                    break;
+                default:
+                    MessageBox.Show("Возникла пробелма!");
+                    break;
+            }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
