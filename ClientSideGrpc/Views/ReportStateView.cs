@@ -2,17 +2,10 @@
 {
     public class ReportStateView
     {
-        public string Name { get; set; }   
-
         public UserView Changer { get; set; }
 
-        public DateTime DateChange { get; set; }
-
-        public ReportStateView() { }
-
-        public override string ToString()
-        {
-            return Name;
-        }
+        public UserView AdditionalChanger { get; set; }
+        
+        public DateTime ChangeDate { get; set; }    
     }
 }

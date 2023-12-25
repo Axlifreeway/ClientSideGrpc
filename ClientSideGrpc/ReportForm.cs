@@ -26,7 +26,7 @@ namespace ClientSideGrpc
         {
             _userMapper = new UserMapper();
             _reportValueMapper = new ReportValueMapper();
-            _reportMapper = new ReportMapper(_userMapper, new ReportStateMapper(_userMapper), _reportValueMapper);
+            _reportMapper = new ReportMapper(_userMapper, _reportValueMapper);
             InitializeComponent();
             _facade = facade;
             _role = role;
@@ -46,15 +46,15 @@ namespace ClientSideGrpc
             changeStateButton.Click += changeReportStateButton_Click;
         }
 
-
         private void reportGenereteButton_Click(object sender, EventArgs e)
         {
             dataGridView1.DataSource = null;
             dataGridView1.Columns.Clear();
 
             var reportType = reportTypesComboBox.Text;
+            var user = userComboBox.Text;
 
-            if (reportType != "")
+            if (reportType != "" && user != "")
             {
                 var dateStart = DateTime.Parse(dateTimePicker1.Text).ToLocalTime().ToUniversalTime().ToTimestamp();
                 var dateEnd = DateTime.Parse(dateTimePicker2.Text).ToLocalTime().ToUniversalTime().ToTimestamp();
@@ -64,6 +64,7 @@ namespace ClientSideGrpc
                     DateEnd = dateEnd,
                     DateStart = dateStart,
                     UserCreator = _role.User,
+                    SecondUser = _userMapper.Map((UserView)userComboBox.SelectedItem),
                 };
 
                 var report = new ReportModel();
@@ -163,28 +164,16 @@ namespace ClientSideGrpc
             var request = new ChangeReportState
             {
                 ReportId = report.Id,
-                Changer = _userMapper.Map(report.Creator),
+                Changer = _userMapper.Map(report.Changer),
                 DateChange = DateTime.Now.ToLocalTime().ToUniversalTime().ToTimestamp(),
-                Receiver = null,
-                SecondApprover = null,
+                AdditionalChanger = _userMapper.Map((UserView)userComboBox.SelectedItem),
             };
-            switch (report.State.Name)
-            {
-                case "Черновик":
-                    request.SecondApprover = _userMapper.Map((UserView)userComboBox.SelectedItem);
-                    return request;
-                case "Одобрен":
-                    request.Receiver = _userMapper.Map((UserView)userComboBox.SelectedItem);
-                    return request;
-                case "Отправлен":
-                    return request;
-            }
             return request;
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (!watchStatus)
+            if (!watchStatus && dataGridView1.CurrentCell.OwningColumn.HeaderText != "Состояние")
             {
                 int id = getIdFromDataGridRow();
                 if (id != -1)
@@ -212,6 +201,50 @@ namespace ClientSideGrpc
                     dataGridView1.DataSource = null;
                     dataGridView1.DataSource = report.Values.Select(x => _reportValueMapper.Map(x)).ToList();
                     dataGridView1.Columns["Id"].Visible = false;
+                    watchStatus = true;
+                }             
+            }
+            else if (dataGridView1.CurrentCell.OwningColumn.HeaderText == "Состояние")
+            {
+                int id = getIdFromDataGridRow();
+                if (id != -1)
+                {
+                    var reportView = reports.Where(x => x.Id == id).First();
+
+                    var request = new ReportLookup
+                    {
+                        Id = id,
+                    };
+                    var report = _facade.GetReport(request);
+
+                    var column1 = new DataGridViewTextBoxColumn();
+                    column1.DataPropertyName = "Changer";
+                    column1.HeaderText = report.ChangerName;
+                    var column2 = new DataGridViewTextBoxColumn();
+                    column2.DataPropertyName = "AdditionalChanger";
+                    column2.HeaderText = report.AdditionalChangerName;
+                    var column3 = new DataGridViewTextBoxColumn();
+                    column3.DataPropertyName = "ChangeDate";
+                    column3.HeaderText = report.ChangeDateName;             
+                    dataGridView1.DataSource = null;
+                    var state = new ReportStateView()
+                    {
+                        ChangeDate = reportView.ChangeDate,
+                        AdditionalChanger = reportView.AdditionalChanger,
+                        Changer = reportView.Changer,
+                    };
+                    dataGridView1.DataSource = new List<ReportStateView> { state };
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Columns.AddRange(new DataGridViewColumn[] { column1, column2, column3 });
+
+                    /*dataGridView1.Columns["Id"].Visible = false;
+                    dataGridView1.Columns["ChangerName"].Visible = false;
+                    dataGridView1.Columns["ChangeDateName"].Visible = false;
+                    dataGridView1.Columns["AdditionalChangerName"].Visible = false;
+                    dataGridView1.Columns["StateName"].Visible = false;
+                    dataGridView1.Columns["Type"].Visible = false;
+                    dataGridView1.Columns["UserCreator"].Visible = false;*/
+
                     watchStatus = true;
                 }
             }
@@ -244,9 +277,10 @@ namespace ClientSideGrpc
         {
             var newReport = _reportMapper.Map(newReportModel);
             report.Id = newReport.Id;
-            report.CreateDate = newReport.CreateDate;
-            report.State = newReport.State;
-            report.Creator = newReport.Creator;
+            report.ChangeDate = newReport.ChangeDate;
+            report.Changer = newReport.Changer;
+            report.AdditionalChanger = newReport.AdditionalChanger;
+            report.StateName = newReport.StateName;
             report.Type = newReport.Type;
             report.Values.Clear();
             report.Values = newReport.Values;
@@ -269,7 +303,7 @@ namespace ClientSideGrpc
                 if(id != -1)
                 {
                     var currentReport = reports.Where(x => x.Id == id).First();
-                    var name = currentReport.State.Name;
+                    var name = currentReport.StateName;
                     switch (name)
                     {
                         case "Черновик":

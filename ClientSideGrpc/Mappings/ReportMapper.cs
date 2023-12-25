@@ -7,15 +7,12 @@ namespace ClientSideGrpc.Mappings
     public class ReportMapper : IMapper<ReportModel, ReportView>
     {
         private readonly IMapper<UserModel, UserView> _userMapper;
-        private readonly IMapper<ReportStateModel, ReportStateView> _stateMapper;
         private readonly IMapper<ReportValueModel, ReportValueView> _reportValueMapper;
 
         public ReportMapper(IMapper<UserModel, UserView> userMapper,
-            IMapper<ReportStateModel, ReportStateView> stateMapper,
             IMapper<ReportValueModel, ReportValueView> reportValueMapper)
         {
             _userMapper = userMapper;
-            _stateMapper = stateMapper;
             _reportValueMapper = reportValueMapper;
         }
 
@@ -24,9 +21,10 @@ namespace ClientSideGrpc.Mappings
             var report = new ReportModel
             {
                 Id = model.Id,
-                CreateDate = model.CreateDate.ToLocalTime().ToTimestamp(),
-                UserCreator = _userMapper.Map(model.Creator),
-                State = _stateMapper.Map(model.State),
+                ChangeDate = model.ChangeDate.ToLocalTime().ToTimestamp(),
+                StateName = model.StateName,
+                AdditionalChanger = _userMapper.Map(model.AdditionalChanger),
+                Changer = _userMapper.Map(model.Changer),
                 Type = model.Type,
             };
             report.Values.AddRange(model.Values.Select(x => _reportValueMapper.Map(x)));
@@ -38,9 +36,10 @@ namespace ClientSideGrpc.Mappings
             var report = new ReportView
             {
                 Id = entity.Id,
-                CreateDate = entity.CreateDate.ToDateTime().ToLocalTime(),
-                Creator = _userMapper.Map(entity.UserCreator),
-                State = _stateMapper.Map(entity.State),
+                ChangeDate = entity.ChangeDate.ToDateTime().ToLocalTime(),
+                Changer = _userMapper.Map(entity.Changer),
+                AdditionalChanger = _userMapper.Map(entity.AdditionalChanger),
+                StateName= entity.StateName,
                 Type = entity.Type,
             };
             if (entity.Values == null)

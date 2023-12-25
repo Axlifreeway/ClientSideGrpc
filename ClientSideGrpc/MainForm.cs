@@ -44,7 +44,6 @@ namespace ClientSideGrpc
             try
             {
                 role = clientFacade.Authorize(client);
-                MessageBox.Show("Вы успешно авторизовались!");
                 Text = "Главная форма";
                 Size = new Size(816, 489);
                 labelAuth.Visible = false;

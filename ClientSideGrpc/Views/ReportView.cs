@@ -1,18 +1,23 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClientSideGrpc.Views
 {
     public class ReportView
     {
         public int Id { get; set; }
-        [DisplayName("Дата создания")]
-        public DateTime CreateDate { get; set; }
+
         [DisplayName("Тип")]
         public string Type { get; set; }
-        [DisplayName("Создатель")]
-        public UserView Creator { get; set; }
+        [Browsable(false)]
+        public DateTime ChangeDate { get; set; }
+        [Browsable(false)]
+        public UserView Changer { get; set; }
+        [Browsable(false)]
+        public UserView AdditionalChanger { get; set; }
+
         [DisplayName("Состояние")]
-        public ReportStateView State { get; set; }  
+        public string StateName { get; set; }
 
         public List<ReportValueView> Values { get; set; } = new List<ReportValueView>();
 
